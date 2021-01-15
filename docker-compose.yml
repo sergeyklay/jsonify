@@ -1,0 +1,20 @@
+# This file is part of the Jsonify.
+#
+# (c) 2021 airSlate <support@airslate.com>
+#
+# For the full copyright and license information, please view
+# the LICENSE file that was distributed with this source code.
+
+version: '3.7'
+
+
+services:
+  app:
+    image: airslate/jsonify:latest
+    build:
+      context: .
+    command: dev
+    ports:
+      - 5001:5000
+    volumes:
+      - .:/usr/src/app
