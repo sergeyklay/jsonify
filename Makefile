@@ -36,4 +36,4 @@ clean:
 
 .PHONY: dist-clean
 dist-clean: clean
-	$(RM) .env
+	@$(RM) .env
