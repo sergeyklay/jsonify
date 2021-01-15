@@ -5,8 +5,16 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
+ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+SHELL    := $(shell which bash)
+
+.env: .env.example
+	cp $^ $@
+
+## Public targets
+
 .PHONY: build
-build:
+build: .env
 	@docker-compose build --force-rm app
 
 .PHONY: up
@@ -25,3 +33,7 @@ stop:
 clean:
 	@docker-compose down -v --remove-orphans
 	@docker network prune -f
+
+.PHONY: dist-clean
+dist-clean: clean
+	$(RM) .env

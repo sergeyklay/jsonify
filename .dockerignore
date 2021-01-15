@@ -5,22 +5,26 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
-# Git
+# Git config.
 .git
 .gitignore
 
-# IDEs
+# IDEs & Edotors.
 .idea
 
-# Project files
+# Build & Project files.
 Makefile
 README.rst
+.env.example
 
-# Docker
+# Docker stuff.
 .dockerignore
 Dockerfile
 docker-compose.yml
 
-# Python
+# Python cache.
 *.pyc
 __pycache__
+
+# Virtualenv.
+.venv

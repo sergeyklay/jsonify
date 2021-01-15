@@ -5,7 +5,12 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
+from pathlib import Path
+
+from dotenv import load_dotenv
 from flask import Flask
+
+load_dotenv(dotenv_path=Path('.') / '.env')
 
 app = Flask(__name__)
 
