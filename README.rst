@@ -2,7 +2,7 @@
 Jsonify
 =======
 
-Example bot for developers.airslate.com .
+Example bot for `<https://developers.airslate.com>`_.
 
 Usage
 =====
@@ -31,4 +31,6 @@ Usage
 .. code-block:: bash
 
    $ make dist-clean
-   $ docker image prune # optional
+   $ docker image prune -f # optional
+   $ docker rmi airslate/jsonify # optional
+
