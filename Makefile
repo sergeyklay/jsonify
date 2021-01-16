@@ -48,3 +48,4 @@ down:
 .PHONY: dist-clean
 dist-clean: down
 	$(RM) .env
+	$(RM) *.sqlite3
