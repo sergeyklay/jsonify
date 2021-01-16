@@ -14,7 +14,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN python3 -m venv $VIRTUAL_ENV
 
 ## add and install requirements
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip wheel
 COPY requirements requirements
 RUN pip install -r requirements/requirements-docker.txt
 
