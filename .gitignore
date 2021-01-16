@@ -11,7 +11,7 @@
 .env
 
 # Python cache.
-*.pyc
+*.py[cod]
 __pycache__
 
 # Virtualenv.

@@ -7,12 +7,16 @@
 
 # Git config.
 .git
+.gitattributes
 .gitignore
+.gitkeep
 
-# IDEs & Edotors.
+# IDEs & Editors.
 .idea
 
 # Build & Project files.
+requirements/*
+!requirements/requirements-docker.txt
 Makefile
 README.rst
 .env.example
@@ -23,7 +27,7 @@ Dockerfile
 docker-compose.yml
 
 # Python cache.
-*.pyc
+*.py[cod]
 __pycache__
 
 # Virtualenv.
