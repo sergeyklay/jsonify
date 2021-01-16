@@ -27,7 +27,6 @@ case "$1" in
 
     export FLASK_DEBUG=1
     export FLASK_ENV=development
-    export FLASK_CONFIG=development
 
     flask run --port 5000 --host 0.0.0.0
   ;;

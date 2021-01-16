@@ -5,11 +5,12 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
-"""The top-level module for Jsonify.
+"""The top-level module for the application.
 
-This module tracks the version of the package as well as the base
-package info used by various functions within Jsonify and provides
-a factory function to create application instance.
+This module tracks the version of the application as well as the
+base application info used by various functions within the
+application and provides a factory function to create application
+instance.
 
 Functions:
 
@@ -46,5 +47,9 @@ def create_app(config_name: str) -> Flask:
 
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
+
+    # main blueprint registration
+    from .main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
 
     return app
