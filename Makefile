@@ -17,7 +17,7 @@ requirements/%.txt: requirements/%.in
 ## Public targets
 
 .PHONY: build
-build: .env requirements/requirements-dev.txt requirements/requirements-docker.txt
+build: .env requirements/requirements-docker.txt
 	docker-compose build --force-rm app
 
 .PHONY: up

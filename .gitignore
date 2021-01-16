@@ -10,9 +10,10 @@
 # Build & Project files.
 .env
 
-# Python cache.
+# Python & Virtualenv.
 *.py[cod]
 __pycache__
-
-# Virtualenv.
 .venv
+
+# Databses.
+*.sqlite3
