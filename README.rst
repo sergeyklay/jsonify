@@ -30,6 +30,5 @@ Usage
 
 .. code-block:: bash
 
-   $ make stop
    $ make dist-clean
    $ docker image prune # optional

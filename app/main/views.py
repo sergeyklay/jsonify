@@ -8,3 +8,8 @@
 """The routes module for the application."""
 
 from . import main
+
+
+@main.route('/')
+def index():
+    return 'Hello, World!'

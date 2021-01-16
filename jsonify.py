@@ -5,6 +5,8 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
+"""The main entry point for Jsonify."""
+
 import os
 from pathlib import Path
 
@@ -16,8 +18,4 @@ if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path=Path('.') / '.env')
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
-
-
-@app.route('/')
-def index():
-    return 'Hello, World!'
+app.config

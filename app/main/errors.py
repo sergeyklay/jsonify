@@ -5,14 +5,24 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
-"""The error handler module for the application."""
+"""The error handler module for the application.
+
+Functions:
+
+    access_denied(e) -> Any
+    internal_server_error(e) -> Any
+    page_not_found(e) -> Any
+    request_wants_json() -> bool
+
+
+"""
 
 from flask import jsonify, render_template, request
 
 from . import main
 
 
-def request_wants_json():
+def request_wants_json() -> bool:
     """Check if client wants a JSON response."""
     json_types = [
         'application/vnd.api+json',
