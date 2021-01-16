@@ -9,31 +9,34 @@ ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 SHELL    := $(shell which bash)
 
 .env: .env.example
-	cp $^ $@
+	cp $< $@
+
+requirements/%.txt: requirements/%.in
+	pip-compile --no-annotate --no-header --output-file $@ $<
 
 ## Public targets
 
 .PHONY: build
-build: .env
-	@docker-compose build --force-rm app
+build: .env requirements/requirements-dev.txt requirements/requirements-docker.txt
+	docker-compose build --force-rm app
 
 .PHONY: up
 up:
-	@docker-compose up -d
+	docker-compose up -d
 
 .PHONY: ps
 ps:
-	@docker-compose ps
+	docker-compose ps
 
 .PHONY: stop
 stop:
-	@docker-compose stop
+	docker-compose stop
 
 .PHONY: clean
 clean:
-	@docker-compose down -v --remove-orphans
-	@docker network prune -f
+	docker-compose down -v --remove-orphans
+	docker network prune -f
 
 .PHONY: dist-clean
 dist-clean: clean
-	@$(RM) .env
+	$(RM) .env

@@ -14,13 +14,18 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN python3 -m venv $VIRTUAL_ENV
 
 ## add and install requirements
-RUN pip install --upgrade pip && pip install pip-tools
-COPY ./requirements.in .
-RUN pip-compile requirements.in > requirements.txt && pip-sync
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip
+COPY requirements requirements
+RUN pip install -r requirements/requirements-docker.txt
 
 ## build-image
 FROM python:3.10-rc-alpine AS runtime-image
+
+## set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV PATH="/opt/venv/bin:$PATH"
+ENV FLASK_APP=jsonify.py
 
 ## copy Python dependencies from build image
 COPY --from=compile-image /opt/venv /opt/venv
@@ -41,13 +46,6 @@ USER user
 
 ## add app
 COPY . /usr/src/app
-
-
-## set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-ENV PATH="/opt/venv/bin:$PATH"
-ENV FLASK_APP=jsonify.py
 
 EXPOSE 5000
 
