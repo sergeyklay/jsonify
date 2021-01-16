@@ -22,8 +22,6 @@ RUN pip install -r requirements/requirements-docker.txt
 FROM python:3.10-rc-alpine AS runtime-image
 
 ## set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
 ENV PATH="/opt/venv/bin:$PATH"
 ENV FLASK_APP=jsonify.py
 
