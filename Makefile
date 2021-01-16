@@ -32,6 +32,10 @@ ps:
 stop:
 	docker-compose stop
 
+.PHONY: test
+test:
+	FLASK_APP=jsonify.py flask test
+
 .PHONY: clean
 clean:
 	docker-compose down -v --remove-orphans
