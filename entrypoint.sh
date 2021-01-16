@@ -17,7 +17,6 @@ Available commands:
 
   help:         Show this help and exit
   dev:          Start a normal Flask development server
-  sh:           Run an interactive shell
 """
 }
 
@@ -30,12 +29,6 @@ case "$1" in
 
     flask run --port 5000 --host 0.0.0.0
   ;;
-  sh)
-    # Enable python to detect custom modules from the command line
-    export PYTHONPATH=/usr/src/app
-    # TODO(egrep): In POSIX sh, string indexing is undefined.
-    /bin/sh "${@:2}"
-    ;;
   *)
     show_help
   ;;

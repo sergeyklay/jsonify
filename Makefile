@@ -36,11 +36,15 @@ stop:
 test:
 	FLASK_APP=jsonify.py flask test
 
-.PHONY: clean
-clean:
+.PHONY: shell
+shell:
+	docker-compose exec app sh
+
+.PHONY: down
+down:
 	docker-compose down -v --remove-orphans
 	docker network prune -f
 
 .PHONY: dist-clean
-dist-clean: clean
+dist-clean: down
 	$(RM) .env
