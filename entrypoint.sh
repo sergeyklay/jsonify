@@ -29,11 +29,12 @@ case "$1" in
     export FLASK_ENV=development
     export FLASK_CONFIG=development
 
-    flask run --port ${FLASK_RUN_PORT} --host ${FLASK_RUN_HOST}
+    flask run --port 5000 --host 0.0.0.0
   ;;
   sh)
     # Enable python to detect custom modules from the command line
     export PYTHONPATH=/usr/src/app
+    # TODO(egrep): In POSIX sh, string indexing is undefined.
     /bin/sh "${@:2}"
     ;;
   *)

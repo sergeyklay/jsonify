@@ -5,14 +5,17 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
+import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from flask import Flask
+from app import create_app
 
-load_dotenv(dotenv_path=Path('.') / '.env')
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path=Path('.') / '.env')
 
-app = Flask(__name__)
+app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
 
 @app.route('/')
