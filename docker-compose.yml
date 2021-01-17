@@ -9,6 +9,26 @@ version: '3.7'
 
 
 services:
+  db: # 'db' service name must be consistent with
+    # DATABASE_URL variable from '.env' file.
+    image: mariadb:10.5.8
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      # Values of these variables must be consistent with DATABASE_URL
+      # variable from '.env' file.
+      MYSQL_DATABASE: jsonify-dev
+      MYSQL_USER: jsonify
+      MYSQL_PASSWORD: jsonify
+    ports:
+      - 3309:3306
+    volumes:
+      - jsonify_db:/var/lib/mysql
+    healthcheck:
+      test: "/usr/bin/mariadb --user=jsonify --password=jsonify --execute 'SHOW DATABASES;'"
+      interval: 3s
+      retries: 10
+
+
   app:
     image: airslate/jsonify:latest
     build:
@@ -22,19 +42,9 @@ services:
     volumes:
       - .:/usr/src/app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
-  db:
-    image: mariadb:10.5.8
-    environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-      MYSQL_DATABASE: jsonify
-      MYSQL_USER: jsonify
-      MYSQL_PASSWORD: jsonify
-    ports:
-      - 3309:3306
-    volumes:
-      - jsonify_db:/var/lib/mysql
 
 volumes:
   jsonify_db:
