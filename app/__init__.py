@@ -1,6 +1,6 @@
 # This file is part of the Jsonify.
 #
-# (c) 2021 airSlate <support@airslate.com>
+# Copyright (c) 2021 airSlate Inc.
 #
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
@@ -35,7 +35,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from config import config
 
-__copyright__ = 'Copyright (C) 2021 airSlate'
+__copyright__ = 'Copyright (c) 2021 airSlate Inc.'
 __version__ = '1.0.0.alpha1'
 __license__ = 'Apache 2.0'
 __author__ = 'Serghei Iakovlev'
