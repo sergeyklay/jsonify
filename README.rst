@@ -7,6 +7,21 @@ Example bot for `<https://developers.airslate.com>`_.
 Usage
 =====
 
+Local Development
+^^^^^^^^^^^^^^^^^^
+
+First, you will need to export some required variables:
+
+.. code-block:: bash
+
+   $ export FLASK_DEBUG=1 FLASK_ENV=development FLASK_APP=jsonify.py
+
+After that see all available commands using ``--help`` option as follows:
+
+.. code-block:: bash
+
+   $ flask --help
+
 Docker
 ^^^^^^
 
