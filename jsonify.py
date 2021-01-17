@@ -9,18 +9,17 @@
 
 import inspect
 import os
-from pathlib import Path
 
 from dotenv import load_dotenv
 from flask_migrate import Migrate, upgrade
 
 from app import create_app, db, models
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+dotenv_path = os.path.join(os.path.dirname(__file__), 'app.env')
 if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path=Path('.') / '.env')
+    load_dotenv(dotenv_path=dotenv_path)
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+app = create_app(os.getenv('FLASK_CONFIG', 'default'))
 migrate = Migrate(app, db)
 
 

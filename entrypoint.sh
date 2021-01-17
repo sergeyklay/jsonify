@@ -26,27 +26,4 @@ while ! flask deploy; do
   fi
 done
 
-show_help() {
-    echo """
-Usage: docker run <imagename> COMMAND
-
-Available commands:
-
-  help:         Show this help and exit
-  dev:          Start a normal Flask development server
-"""
-}
-
-case "$1" in
-  dev)
-    echo "Running Development Server..."
-
-    export FLASK_DEBUG=1
-    export FLASK_ENV=development
-
-    flask run --port 5000 --host 0.0.0.0
-  ;;
-  *)
-    show_help
-  ;;
-esac
+exec gunicorn -b :5000 --access-logfile - --error-logfile - jsonify:app
