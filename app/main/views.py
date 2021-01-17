@@ -41,3 +41,8 @@ def server_shutdown():
         abort(500)
     shutdown()
     return 'Shutting down...'
+
+
+@main.route('/ping')
+def ping():
+    return 'pong'
