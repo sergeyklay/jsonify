@@ -12,6 +12,8 @@ services:
   db: # NOTE: 'db' service name is used as a host for
       # DATABASE_URL variable in '.env' file.
     image: mariadb:10.5.8
+    container_name: databse
+    restart: unless-stopped
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
       # Values of these variables must be consistent with
@@ -27,10 +29,13 @@ services:
       test: "/usr/bin/mariadb --user=jsonify --password=jsonify --execute 'SHOW DATABASES;'"
       interval: 3s
       retries: 10
+    networks:
+      - jsonify
 
 
   app:
     image: airslate/jsonify:latest
+    container_name: app
     build:
       context: .
     ports:
@@ -40,7 +45,13 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - jsonify
 
+
+networks:
+  jsonify:
 
 volumes:
   jsonify_db:
+    driver: local
