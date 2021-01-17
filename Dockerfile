@@ -16,7 +16,7 @@ RUN python3 -m venv $VIRTUAL_ENV
 ## add and install requirements
 RUN pip install --upgrade pip wheel
 COPY requirements requirements
-RUN pip install -r requirements/requirements-docker.txt
+RUN pip install --no-cache-dir -r requirements/requirements-docker.txt
 
 ## build-image
 FROM python:3.10-rc-alpine AS runtime-image
