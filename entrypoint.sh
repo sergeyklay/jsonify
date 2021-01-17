@@ -9,6 +9,11 @@
 
 set -e
 
+while ! flask deploy; do
+  echo "Deploy command failed, retrying in 5 secs..."
+  sleep 5
+done
+
 show_help() {
     echo """
 Usage: docker run <imagename> COMMAND

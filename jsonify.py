@@ -12,7 +12,7 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from flask_migrate import Migrate
+from flask_migrate import Migrate, upgrade
 
 from app import create_app, db, models
 
@@ -39,3 +39,10 @@ def test():
     import unittest
     tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner(verbosity=2).run(tests)
+
+
+@app.cli.command()
+def deploy():
+    """Run deployment tasks."""
+    # Migrate database to latest revision.
+    upgrade()
