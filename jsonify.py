@@ -7,12 +7,14 @@
 
 """The main entry point for Jsonify."""
 
+import inspect
 import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from app import create_app, db, models
 from flask_migrate import Migrate
+
+from app import create_app, db, models
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(dotenv_path):
@@ -20,6 +22,15 @@ if os.path.exists(dotenv_path):
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
+
+
+@app.shell_context_processor
+def make_shell_context():
+    """Configure flask shell command  to automatically import app objects."""
+    return dict(
+        app=app,
+        db=db,
+        **dict(inspect.getmembers(models, inspect.isclass)))
 
 
 @app.cli.command()
