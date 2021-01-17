@@ -12,7 +12,13 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
-    JSONIFY_SLOW_DB_QUERY_TIME = 0.5
+    APP_SLOW_DB_QUERY_TIME = 0.5
+    BOT_CLIENT_ID = os.getenv('BOT_CLIENT_ID')
+    BOT_CLIENT_SECRET = os.getenv('BOT_CLIENT_SECRET')
+    AS_API_BASE_URI = os.getenv(
+        'AS_API_BASE_URI',
+        'https://api.airslate.com'
+    )
 
     @staticmethod
     def init_app(app):
