@@ -42,10 +42,9 @@ def request_wants_json() -> bool:
 @main.app_errorhandler(403)
 def access_denied(e):
     """Registers a function to handle 403 errors."""
-    # Respond differently based on the MIME type accepted.
     if request_wants_json():
         # TODO(egrep): provide a template for error responses
-        response = jsonify({'error': 'access denied'})
+        response = jsonify({'message': 'Access denied'})
         response.status_code = 403
         return response
     return render_template('403.html'), 403
@@ -54,10 +53,9 @@ def access_denied(e):
 @main.app_errorhandler(404)
 def page_not_found(e):
     """Registers a function to handle 404 errors."""
-    # Respond differently based on the MIME type accepted.
     if request_wants_json():
         # TODO(egrep): provide a template for error responses
-        response = jsonify({'error': 'not found'})
+        response = jsonify({'message': 'Not found'})
         response.status_code = 404
         return response
     return render_template('404.html'), 404
@@ -66,10 +64,20 @@ def page_not_found(e):
 @main.app_errorhandler(500)
 def internal_server_error(e):
     """Registers a function to handle 500 errors."""
-    # Respond differently based on the MIME type accepted.
     if request_wants_json():
         # TODO(egrep): provide a template for error responses
-        response = jsonify({'error': 'internal server error'})
+        response = jsonify({'message': 'Internal server error'})
         response.status_code = 500
         return response
     return render_template('500.html'), 500
+
+
+@main.app_errorhandler(503)
+def internal_server_error(e):
+    """Registers a function to handle 503 errors."""
+    if request_wants_json():
+        # TODO(egrep): provide a template for error responses
+        response = jsonify({'message': 'Server is under maintenance'})
+        response.status_code = 503
+        return response
+    return render_template('503.html'), 503
