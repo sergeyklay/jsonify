@@ -27,8 +27,8 @@ Dockerfile
 docker-compose.yml
 
 # Python & Virtualenv.
-*.py[cod]
-__pycache__
+**/*.py[cod]
+**/__pycache__
 .venv
 
 # Databses.
