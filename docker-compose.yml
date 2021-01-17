@@ -9,16 +9,10 @@ version: '3.7'
 
 
 services:
-  db: # 'db' service name must be consistent with
-    # DATABASE_URL variable from '.env' file.
+  db: # NOTE: 'db' service name must be consistent
+      # with DATABASE_URL variable from 'app.env' file.
     image: mariadb:10.5.8
-    environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-      # Values of these variables must be consistent with DATABASE_URL
-      # variable from '.env' file.
-      MYSQL_DATABASE: jsonify-dev
-      MYSQL_USER: jsonify
-      MYSQL_PASSWORD: jsonify
+    env_file: compose-mysql.env
     ports:
       - 3309:3306
     volumes:
@@ -33,10 +27,6 @@ services:
     image: airslate/jsonify:latest
     build:
       context: .
-    command: dev
-    environment:
-      PYTHONDONTWRITEBYTECODE: 1
-      PYTHONUNBUFFERED: 1
     ports:
       - 5001:5000
     volumes:

@@ -20,19 +20,25 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        'DEV_DATABASE_URL',
         'sqlite:///' + os.path.join(basedir, 'db-dev.sqlite3')
+    )
 
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        'TEST_DATABASE_URL',
         'sqlite://'  # in-memory
+    )
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        'DATABASE_URL',
         'sqlite:///' + os.path.join(basedir, 'db.sqlite3')
+    )
 
 
 class DockerConfig(ProductionConfig):
