@@ -8,6 +8,11 @@
 from . import api
 
 
-@api.route('/organization/connect', methods=['POST'])
-def organization_connect():
+@api.route('/prefill/resource/fields', methods=['POST'])
+def prefill_fields():
+    raise NotImplementedError()
+
+
+@api.route('/prefill/handle/event', methods=['POST'])
+def handle_event():
     raise NotImplementedError()

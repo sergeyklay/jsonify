@@ -5,10 +5,9 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
-"""The api blueprint module for the application."""
+from . import api
 
-from flask import Blueprint
 
-api = Blueprint('api', __name__)
-
-from . import organizations, prefill, settings
+@api.route('/settings', methods=['POST'])
+def update_settings():
+    raise NotImplementedError()
