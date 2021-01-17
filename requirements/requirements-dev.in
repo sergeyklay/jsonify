@@ -1,3 +1,2 @@
 -r requirements.in
 pip-tools
-ipython
