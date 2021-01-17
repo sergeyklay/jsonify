@@ -8,7 +8,7 @@
 # Directories to ignore (do not add trailing '/'s, they skip symlinks).
 
 # Build & Project files.
-*.env
+.env
 
 # Python & Virtualenv.
 *.py[cod]

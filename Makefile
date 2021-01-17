@@ -13,7 +13,7 @@
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 SHELL    := $(shell which bash)
 
-%.env: %.env.example
+.env: .env.example
 	cp $< $@
 
 requirements/%.txt: requirements/%.in
@@ -22,7 +22,7 @@ requirements/%.txt: requirements/%.in
 ## Public targets
 
 .PHONY: build
-build: app.env requirements/requirements-docker.txt
+build: .env requirements/requirements-docker.txt
 	docker-compose build --force-rm app
 
 .PHONY: up

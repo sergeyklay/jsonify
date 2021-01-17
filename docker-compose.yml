@@ -9,10 +9,16 @@ version: '3.7'
 
 
 services:
-  db: # NOTE: 'db' service name must be consistent
-      # with DATABASE_URL variable from 'app.env' file.
+  db: # NOTE: 'db' service name is used as a host for
+      # DATABASE_URL variable in '.env' file.
     image: mariadb:10.5.8
-    env_file: compose-mysql.env
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      # Values of these variables must be consistent with
+      # DATABASE_URL variable from '.env' file.
+      MYSQL_DATABASE: jsonify
+      MYSQL_USER: jsonify
+      MYSQL_PASSWORD: jsonify
     ports:
       - 3309:3306
     volumes:

@@ -19,7 +19,7 @@ requirements/*
 !requirements/requirements-docker.txt
 Makefile
 README.rst
-*.env.example
+.env.example
 
 # Docker stuff.
 .dockerignore

@@ -12,9 +12,9 @@ set -e
 # Export environment variables early to be able run 'flask deploy'
 # w/o initializing whole application and properly initializing
 # configuration class.
-if [ -f ./app.env ]; then
-  . ./app.env
-  export $(cut -d= -f1 ./app.env | grep -v "^#\|^$")
+if [ -f ./.env ]; then
+  . ./.env
+  export $(cut -d= -f1 ./.env | grep -v "^#\|^$")
 fi
 
 interval=0
