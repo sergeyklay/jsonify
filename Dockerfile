@@ -24,6 +24,7 @@ FROM python:3.10-rc-alpine AS runtime-image
 ## set environment variables
 ENV PATH="/opt/venv/bin:$PATH"
 ENV FLASK_APP=jsonify.py
+ENV FLASK_CONFIG docker
 
 ## copy Python dependencies from build image
 COPY --from=compile-image /opt/venv /opt/venv
@@ -45,7 +46,6 @@ USER user
 ## add app
 COPY . /usr/src/app
 
+## run-time configuration
 EXPOSE 5000
-
-## run entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
