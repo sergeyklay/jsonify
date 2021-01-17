@@ -8,11 +8,11 @@
 from . import api
 
 
-@api.route('/prefill/resource/fields', methods=['POST'])
-def prefill_fields():
+@api.route('/resource/fields', methods=['POST'])
+def resource_fields():
     raise NotImplementedError()
 
 
-@api.route('/prefill/handle/event', methods=['POST'])
-def handle_event():
+@api.route('/resource/settings', methods=['POST'])
+def resource_settings():
     raise NotImplementedError()

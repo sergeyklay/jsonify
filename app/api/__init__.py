@@ -11,4 +11,4 @@ from flask import Blueprint
 
 api = Blueprint('api', __name__)
 
-from . import organizations, prefill, settings
+from . import connections, resources, webhooks

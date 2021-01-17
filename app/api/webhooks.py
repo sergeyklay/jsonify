@@ -8,6 +8,6 @@
 from . import api
 
 
-@api.route('/settings', methods=['POST'])
-def update_settings():
+@api.route('/handle/event', methods=['POST'])
+def handle_event():
     raise NotImplementedError()
