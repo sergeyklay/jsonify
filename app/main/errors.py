@@ -44,7 +44,7 @@ def access_denied(e):
     """Registers a function to handle 403 errors."""
     if request_wants_json():
         # TODO(egrep): provide a template for error responses
-        response = jsonify({'message': 'Access denied'})
+        response = jsonify({'message': 'Access Denied'})
         response.status_code = 403
         return response
     return render_template('403.html'), 403
@@ -55,7 +55,7 @@ def page_not_found(e):
     """Registers a function to handle 404 errors."""
     if request_wants_json():
         # TODO(egrep): provide a template for error responses
-        response = jsonify({'message': 'Not found'})
+        response = jsonify({'message': 'Not Found'})
         response.status_code = 404
         return response
     return render_template('404.html'), 404
@@ -66,7 +66,7 @@ def internal_server_error(e):
     """Registers a function to handle 500 errors."""
     if request_wants_json():
         # TODO(egrep): provide a template for error responses
-        response = jsonify({'message': 'Internal server error'})
+        response = jsonify({'message': 'Internal Server Error'})
         response.status_code = 500
         return response
     return render_template('500.html'), 500
@@ -77,7 +77,7 @@ def internal_server_error(e):
     """Registers a function to handle 503 errors."""
     if request_wants_json():
         # TODO(egrep): provide a template for error responses
-        response = jsonify({'message': 'Server is under maintenance'})
+        response = jsonify({'message': 'Service Temporarily Unavailable'})
         response.status_code = 503
         return response
     return render_template('503.html'), 503
