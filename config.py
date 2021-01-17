@@ -12,6 +12,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
+    JSONIFY_SLOW_DB_QUERY_TIME = 0.5
 
     @staticmethod
     def init_app(app):
