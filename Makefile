@@ -5,6 +5,11 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
+#
+# This Makefile is designed to make it easier to work with Docker
+# as well as Docker Compose. For any other commands use 'flask <command>'.
+#
+
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 SHELL    := $(shell which bash)
 
