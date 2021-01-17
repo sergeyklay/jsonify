@@ -9,7 +9,7 @@
 
 This module tracks the version of the application as well as the
 base application info used by various functions within the
-application and provides a factory function to create application
+package and provides a factory function to create application
 instance.
 
 Functions:
@@ -18,17 +18,20 @@ Functions:
 
 Misc variables:
 
-    __copyright__
-    __version__
-    __license__
     __author__
     __author_email__
-    __url__
+    __copyright__
     __description__
+    __license__
+    __url__
+    __version__
+    config
+    db
 
 """
 
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 from config import config
 
@@ -41,12 +44,17 @@ __url__ = 'https://github.com/sergeyklay/as-jsonify-bot'
 __description__ = 'Example bot for developers.airslate.com'
 
 
+db = SQLAlchemy()
+
+
 def create_app(config_name: str) -> Flask:
     """Factory function to create application instance."""
     app = Flask(__name__)
 
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
+
+    db.init_app(app)
 
     # main blueprint registration
     from .main import main as main_blueprint
