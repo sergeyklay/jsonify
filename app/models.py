@@ -7,8 +7,8 @@
 
 from sqlalchemy.sql import func
 
+from app import db
 from app.exceptions import ValidationError
-from . import db
 
 
 class Organization(db.Model):
@@ -21,6 +21,14 @@ class Organization(db.Model):
     token_expires_at = db.Column(db.TIMESTAMP, nullable=True)
     created_at = db.Column(db.TIMESTAMP, server_default=func.now())
     updated_at = db.Column(db.TIMESTAMP, onupdate=func.now())
+
+    @staticmethod
+    def from_uid(uid):
+        """A factory method to create Organization instance."""
+        if not uid:
+            raise ValidationError('Organization UID is required')
+
+        return Organization(organization_uid=uid)
 
     @property
     def serialize(self) -> dict:
@@ -37,12 +45,3 @@ class Organization(db.Model):
     def __repr__(self):
         """Returns the object representation in string format."""
         return '<Organization %r>' % self.organization_uid
-
-    @staticmethod
-    def from_uid(uid):
-        """A factory method to create Organization instance."""
-        if not uid:
-            raise ValidationError('Organization UID is required')
-
-        return Organization(organization_uid=uid)
-        pass
