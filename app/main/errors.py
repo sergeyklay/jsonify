@@ -49,11 +49,11 @@ def handle_api_error(error):
         response.status_code = error.status_code
         return response
 
-    error_pages = [400, 403, 404, 500, 503]
-    if error.status_code in error_pages:
-        return render_template(f'{error.status_code}.html'), error.status_code
-
-    return render_template('400.html'), error.status_code
+    return render_template(
+        'http_error.html',
+        message=error.message,
+        status_code=error.status_code,
+    ), error.status_code
 
 
 @main.app_errorhandler(400)
@@ -71,7 +71,7 @@ def access_denied(e):
 @main.app_errorhandler(404)
 def page_not_found(e):
     """Registers a function to handle 404 errors."""
-    return handle_api_error(ApiError('Not Found', 404))
+    return handle_api_error(ApiError('Page Not Found', 404))
 
 
 @main.app_errorhandler(500)

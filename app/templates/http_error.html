@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Jsonify - {{ message }}{% endblock %}
+
+{% block content %}
+<header><h1>{{ status_code }} {{ message }}</h1></header>
+<hr>
+<p id="served-by">Jsonify</p>
+{% endblock %}
