@@ -20,5 +20,18 @@ class Organization(db.Model):
     created_at = db.Column(db.TIMESTAMP, server_default=func.now())
     updated_at = db.Column(db.TIMESTAMP, onupdate=func.now())
 
+    @property
+    def serialize(self) -> dict:
+        """Return object data in easily serializable format"""
+        return {
+            'id': self.id,
+            'organization_uid': self.organization_uid,
+            'domain': self.domain,
+            'token': self.token,
+            'token_expires_at': self.token_expires_at,
+            'created_at': self.created_at,
+        }
+
     def __repr__(self):
+        """Returns the object representation in string format."""
         return '<Organization %r>' % self.organization_uid
