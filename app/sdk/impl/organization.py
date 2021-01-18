@@ -5,8 +5,9 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code
 
-from app.sdk.generic.collections import path
+from app import db
 from app.models import Organization
+from app.sdk.generic.collections import path
 
 
 def extract_id(data: dict) -> str or None:
@@ -24,6 +25,8 @@ def connect(org: Organization) -> Organization:
     return org
 
 
-def disconnect(org: Organization) -> bool:
-    return True
+def disconnect(org_id: int) -> bool:
+    rows = db.session.query(Organization).filter_by(organization_uid=org_id).delete()
+    db.session.commit()
 
+    return bool(rows)
