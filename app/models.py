@@ -5,8 +5,10 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
-from . import db
 from sqlalchemy.sql import func
+
+from app.exceptions import ValidationError
+from . import db
 
 
 class Organization(db.Model):
@@ -35,3 +37,12 @@ class Organization(db.Model):
     def __repr__(self):
         """Returns the object representation in string format."""
         return '<Organization %r>' % self.organization_uid
+
+    @staticmethod
+    def from_uid(uid):
+        """A factory method to create Organization instance."""
+        if not uid:
+            raise ValidationError('Organization UID is required')
+
+        return Organization(organization_uid=uid)
+        pass
