@@ -15,19 +15,18 @@ from app.api import api
 from app.models import Organization
 from app.sdk.generic.collections import path
 from app.sdk.impl.organization import extract_id, connect, disconnect
+from app.sdk.exceptions import ValidationError, InvalidUsage
 
 
 @api.route('/organization/connect', methods=['POST'])
 def organization_connect():
     content = request.get_json()  # type: dict
     if not content:
-        response = {'message': 'No input data provided'}
-        return response, HTTPStatus.BAD_REQUEST
+        raise InvalidUsage('No input data provided')
 
     data = content.get('data')  # type: dict
     if not data:
-        response = {'message': 'Invalid payload, missed "data"'}
-        return response, HTTPStatus.BAD_REQUEST
+        raise InvalidUsage('Invalid payload, missed "data"')
 
     should_disconnect = path(content, 'meta.disconnected') or False
     current_app.logger.info(
@@ -37,8 +36,7 @@ def organization_connect():
 
     org_id = extract_id(data)
     if not org_id:
-        response = {'message': 'Invalid payload, missed organization id'}
-        return response, HTTPStatus.BAD_REQUEST
+        raise ValidationError('Organization UID is required')
 
     if should_disconnect:
         status = disconnect(org_id)

@@ -19,7 +19,8 @@ Functions:
 
 from flask import jsonify, render_template, request
 
-from . import main
+from app.main import main
+from app.sdk.exceptions import ApiError
 
 
 def request_wants_json() -> bool:
@@ -37,6 +38,21 @@ def request_wants_json() -> bool:
     # deliver JSON to an ordinary browser.
     return (best in json_types) and \
         request.accept_mimetypes[best] > request.accept_mimetypes[html_type]
+
+
+@main.app_errorhandler(ApiError)
+def handle_api_error(error):
+    if request_wants_json():
+        errors = {'errors': [error.to_dict()]}
+        response = jsonify(errors)
+        response.status_code = error.status_code
+        return response
+
+    error_pages = [400, 403, 404, 500, 503]
+    if error.status_code in error_pages:
+        return render_template(f'{error.status_code}.html'), error.status_code
+
+    return render_template('400.html'), error.status_code
 
 
 @main.app_errorhandler(403)

@@ -8,7 +8,7 @@
 from sqlalchemy.sql import func
 
 from app import db
-from app.exceptions import ValidationError
+from app.sdk.exceptions import ValidationError
 
 
 class Organization(db.Model):
