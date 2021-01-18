@@ -50,7 +50,6 @@ db = SQLAlchemy()
 def create_app(config_name: str) -> Flask:
     """Factory function to create application instance."""
     app = Flask(__name__)
-
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
