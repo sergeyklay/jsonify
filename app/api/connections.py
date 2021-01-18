@@ -13,20 +13,20 @@ from sqlalchemy import exc
 from app import db
 from app.api import api
 from app.models import Organization
+from app.sdk import exceptions
 from app.sdk.generic.collections import path
 from app.sdk.impl.organization import extract_id, connect, disconnect
-from app.sdk.exceptions import ValidationError, InvalidUsage
 
 
 @api.route('/organization/connect', methods=['POST'])
 def organization_connect():
-    content = request.get_json()  # type: dict
+    content = request.get_json()
     if not content:
-        raise InvalidUsage('No input data provided')
+        raise exceptions.InvalidUsage('No input data provided')
 
-    data = content.get('data')  # type: dict
+    data = content.get('data')
     if not data:
-        raise InvalidUsage('Invalid payload, missed "data"')
+        raise exceptions.InvalidUsage('Invalid payload, missed "data"')
 
     should_disconnect = path(content, 'meta.disconnected') or False
     current_app.logger.info(
@@ -36,19 +36,18 @@ def organization_connect():
 
     org_id = extract_id(data)
     if not org_id:
-        raise ValidationError('Organization UID is required')
+        raise exceptions.ValidationError('Organization UID is required')
 
     if should_disconnect:
         status = disconnect(org_id)
-        if status:
-            message = 'Organization disconnected.'
-            response = {'message': 'Organization disconnected.'}
-            current_app.logger.info(message)  # TODO: + org_id
+        if not status:
+            raise exceptions.OrganizationAbsent({'uid': org_id})
 
-            return response, HTTPStatus.OK
-        else:
-            response = {'message': f'Organization with uid {org_id} is not found.'}
-            return response, HTTPStatus.BAD_REQUEST
+        message = 'Organization disconnected.'
+        response = {'message': 'Organization disconnected.'}
+        current_app.logger.info(message)  # TODO: + org_id
+
+        return response, HTTPStatus.OK
     else:
         org = Organization.from_uid(org_id)
         # TODO: Get access token and domain for org_id
@@ -60,19 +59,13 @@ def organization_connect():
         try:
             db.session.add(organization)
             db.session.flush()
-        except exc.IntegrityError as error:
+        except exc.IntegrityError:
             db.session.rollback()
 
-            existing = db.session \
-                .query(Organization) \
-                .filter_by(organization_uid=org_id) \
-                .one()
+            message = f'Integrity failure, organization {org_id} in use'
+            current_app.logger.error(message)
 
-            message = f'Integrity failure, organization in use: {existing}'
-            response = {'message': message}
-
-            current_app.logger.error(message)  # TODO: + error
-            return response, HTTPStatus.BAD_REQUEST
+            raise exceptions.OrganizationPresent({'uid': org_id})
         else:
             db.session.commit()
 

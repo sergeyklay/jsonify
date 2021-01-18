@@ -33,3 +33,20 @@ class ValidationError(ApiError):
 class InvalidUsage(ApiError):
     def __init__(self, message, status_code=None, payload=None):
         super(InvalidUsage, self).__init__(message, status_code, payload)
+
+
+class OrganizationAbsent(ApiError):
+    def __init__(self, payload=None):
+        super(OrganizationAbsent, self).__init__(
+            'Organization is not found.',
+            HTTPStatus.NOT_FOUND,
+            payload
+        )
+
+
+class OrganizationPresent(ApiError):
+    def __init__(self, payload=None):
+        super(OrganizationPresent, self).__init__(
+            message='Integrity failure, organization in use.',
+            payload=payload
+        )
