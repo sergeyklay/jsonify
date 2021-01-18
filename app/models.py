@@ -13,7 +13,7 @@ class Organization(db.Model):
     __tablename__ = 'organizations'
 
     id = db.Column(db.Integer, primary_key=True)
-    organization_uid = db.Column(db.String(32), nullable=False, index=True)
+    organization_uid = db.Column(db.String(32), nullable=False, unique=True)
     domain = db.Column(db.String(512), nullable=True)
     token = db.Column(db.Text, nullable=True)
     token_expires_at = db.Column(db.TIMESTAMP, nullable=True)
