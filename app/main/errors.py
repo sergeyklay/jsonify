@@ -9,6 +9,7 @@
 
 Functions:
 
+    handle_api_error(e) -> Any
     access_denied(e) -> Any
     internal_server_error(e) -> Any
     page_not_found(e) -> Any
@@ -19,7 +20,8 @@ Functions:
 
 from flask import jsonify, render_template, request
 
-from . import main
+from app.main import main
+from app.sdk.exceptions import ApiError
 
 
 def request_wants_json() -> bool:
@@ -39,45 +41,46 @@ def request_wants_json() -> bool:
         request.accept_mimetypes[best] > request.accept_mimetypes[html_type]
 
 
+@main.app_errorhandler(ApiError)
+def handle_api_error(error):
+    if request_wants_json():
+        errors = {'errors': [error.to_dict()]}
+        response = jsonify(errors)
+        response.status_code = error.status_code
+        return response
+
+    return render_template(
+        'error.html',
+        message=error.message,
+        status_code=error.status_code,
+    ), error.status_code
+
+
+@main.app_errorhandler(400)
+def access_denied(e):
+    """Registers a function to handle 400 errors."""
+    return handle_api_error(ApiError('Bad Request', 400))
+
+
 @main.app_errorhandler(403)
 def access_denied(e):
     """Registers a function to handle 403 errors."""
-    if request_wants_json():
-        # TODO(egrep): provide a template for error responses
-        response = jsonify({'message': 'Access Denied'})
-        response.status_code = 403
-        return response
-    return render_template('403.html'), 403
+    return handle_api_error(ApiError('Access Denied', 403))
 
 
 @main.app_errorhandler(404)
 def page_not_found(e):
     """Registers a function to handle 404 errors."""
-    if request_wants_json():
-        # TODO(egrep): provide a template for error responses
-        response = jsonify({'message': 'Not Found'})
-        response.status_code = 404
-        return response
-    return render_template('404.html'), 404
+    return handle_api_error(ApiError('Page Not Found', 404))
 
 
 @main.app_errorhandler(500)
 def internal_server_error(e):
     """Registers a function to handle 500 errors."""
-    if request_wants_json():
-        # TODO(egrep): provide a template for error responses
-        response = jsonify({'message': 'Internal Server Error'})
-        response.status_code = 500
-        return response
-    return render_template('500.html'), 500
+    return handle_api_error(ApiError('Internal Server Error', 500))
 
 
 @main.app_errorhandler(503)
 def internal_server_error(e):
     """Registers a function to handle 503 errors."""
-    if request_wants_json():
-        # TODO(egrep): provide a template for error responses
-        response = jsonify({'message': 'Service Temporarily Unavailable'})
-        response.status_code = 503
-        return response
-    return render_template('503.html'), 503
+    return handle_api_error(ApiError('Service Temporarily Unavailable', 503))

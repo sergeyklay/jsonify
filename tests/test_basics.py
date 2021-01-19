@@ -21,7 +21,7 @@ class BaseTestCase(unittest.TestCase):
     def tearDown(self) -> None:
         self.app_context.pop()
 
-    def test_app_exist(self) ->None:
+    def test_app_exist(self) -> None:
         self.assertFalse(current_app is None)
 
     def test_app_is_testing(self):
