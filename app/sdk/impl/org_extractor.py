@@ -5,7 +5,7 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code
 
-from app.sdk.generic.collections import path
+from app.sdk.collections import path
 
 
 def extract_id(data: dict) -> str or None:

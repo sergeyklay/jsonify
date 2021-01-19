@@ -10,7 +10,13 @@ Usage
 Local Development
 ^^^^^^^^^^^^^^^^^^
 
-First, you will need to export some required variables:
+First, you will need to install dependencies:
+
+.. code-block:: bash
+
+   $ pip install -r requirements/requirements-dev.txt
+
+Then export required variables:
 
 .. code-block:: bash
 

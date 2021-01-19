@@ -8,8 +8,8 @@
 from http import HTTPStatus
 
 from app.models import Organization
+from app.sdk.collections import path
 from app.sdk.exceptions import InvalidUsage, ValidationError
-from app.sdk.generic.collections import path
 from app.sdk.impl.org_extractor import extract_id
 from app.sdk.impl.processors.organization import connect, disconnect
 

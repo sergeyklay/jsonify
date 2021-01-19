@@ -7,7 +7,7 @@
 
 import unittest
 
-from app.sdk.generic import collections
+from app.sdk import collections
 
 
 class TestCollections(unittest.TestCase):
