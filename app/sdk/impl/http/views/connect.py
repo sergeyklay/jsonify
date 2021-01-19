@@ -8,7 +8,7 @@
 from http import HTTPStatus
 
 from app.models import Organization
-from app.sdk import exceptions
+from app.sdk.exceptions import InvalidUsage, ValidationError
 from app.sdk.generic.collections import path
 from app.sdk.impl.org_extractor import extract_id
 from app.sdk.impl.processors.organization import connect, disconnect
@@ -16,17 +16,17 @@ from app.sdk.impl.processors.organization import connect, disconnect
 
 def handle_connection(payload):
     if not payload or not isinstance(payload, dict):
-        raise exceptions.InvalidUsage('No input data provided')
+        raise InvalidUsage('No input data provided')
 
     data = payload.get('data')
-    if not data:
-        raise exceptions.InvalidUsage('Invalid payload, missed "data"')
+    if not data or not isinstance(data, dict):
+        raise InvalidUsage('Invalid payload, missed "data"')
 
     should_disconnect = path(payload, 'meta.disconnected') or False
 
     org_id = extract_id(data)
     if not org_id:
-        raise exceptions.ValidationError('Organization UID is missed')
+        raise ValidationError('Organization UID is missed')
 
     # TODO:
     # logger.info(
@@ -42,5 +42,4 @@ def handle_connection(payload):
         message = 'Organization connected.'
 
     response = {'message': f'{message}'}
-
     return response, HTTPStatus.OK

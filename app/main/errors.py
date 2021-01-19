@@ -50,7 +50,7 @@ def handle_api_error(error):
         return response
 
     return render_template(
-        'http_error.html',
+        'error.html',
         message=error.message,
         status_code=error.status_code,
     ), error.status_code
