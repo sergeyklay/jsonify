@@ -16,7 +16,7 @@ First, you will need to install dependencies:
 
    $ pip install -r requirements/requirements-dev.txt
 
-Then export required variables:
+Then, export required variables:
 
 .. code-block:: bash
 

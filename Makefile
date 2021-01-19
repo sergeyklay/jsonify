@@ -7,7 +7,8 @@
 
 #
 # This Makefile is designed to make it easier to work with Docker
-# as well as Docker Compose. For any other commands use 'flask <command>'.
+# as well as Docker Compose only. For any other commands use
+#   'flask <command>'.
 #
 
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
@@ -36,10 +37,6 @@ ps:
 .PHONY: stop
 stop:
 	docker-compose stop
-
-.PHONY: test
-test:
-	FLASK_APP=jsonify.py flask test
 
 .PHONY: shell
 shell:
