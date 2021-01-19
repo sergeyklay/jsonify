@@ -35,18 +35,19 @@ class InvalidUsage(ApiError):
         super(InvalidUsage, self).__init__(message, status_code, payload)
 
 
-class OrganizationAbsent(ApiError):
-    def __init__(self, payload=None):
-        super(OrganizationAbsent, self).__init__(
-            'Organization is not found.',
-            HTTPStatus.NOT_FOUND,
-            payload
-        )
+class OrganizationConnect(ApiError):
+    def __init__(self, message=None, payload=None):
+        if not message:
+            message = 'Error occurred during organization connect process.'
+
+        super(OrganizationConnect, self).__init__(
+            message=message, payload=payload)
 
 
-class OrganizationPresent(ApiError):
-    def __init__(self, payload=None):
-        super(OrganizationPresent, self).__init__(
-            message='Integrity failure, organization in use.',
-            payload=payload
-        )
+class OrganizationDisconnect(ApiError):
+    def __init__(self, message=None, payload=None):
+        if not message:
+            message = 'Error occurred during organization disconnect process.'
+
+        super(OrganizationDisconnect, self).__init__(
+            message=message, payload=payload)
