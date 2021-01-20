@@ -1,20 +1,35 @@
 # This file is part of the Jsonify.
 #
-# Copyright (c) 2021 airSlate Inc.
+# Copyright (c) 2021 airSlate, Inc.
 #
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
+from flask import current_app
 from sqlalchemy import exc
 
 from app import db
 from app.models import Organization
-from app.sdk.exceptions import OrganizationConnect
-from app.sdk.exceptions import OrganizationDisconnect
+from app.sdk.exceptions import InternalServerError
+from app.sdk.exceptions import OrganizationConnect, OrganizationDisconnect
+from app.sdk.impl.authenticator import authenticate
 
 
 def connect(organization: Organization) -> Organization:
     try:
+        client_id = current_app.config.get('BOT_CLIENT_ID')
+        client_secret = current_app.config.get('BOT_CLIENT_SECRET')
+
+        identity = authenticate(
+            organization.organization_uid,
+            client_id,
+            client_secret
+        )
+
+        organization.token = identity.token
+        organization.domain = identity.domain
+        organization.token_expires_at = identity.expires
+
         db.session.add(organization)
         db.session.flush()
     except exc.IntegrityError:
@@ -23,7 +38,17 @@ def connect(organization: Organization) -> Organization:
         # logger.error(message)
 
         db.session.rollback()
-        raise OrganizationConnect(payload={'id': organization.organization_uid})
+        raise OrganizationConnect(
+            message='Organization already connected.',
+            payload={'id': organization.organization_uid}
+        )
+    except exc.SQLAlchemyError:
+        # TODO:
+        # message = 'Error occurred during organization connection.' + exc
+        # logger.error(message)
+
+        db.session.rollback()
+        raise InternalServerError(payload={'id': organization.organization_uid})
     else:
         db.session.commit()
         # TODO:
@@ -39,7 +64,10 @@ def disconnect(org_uid: str):
 
     status = bool(rows)
     if not status:
-        raise OrganizationDisconnect(payload={'id': org_uid})
+        raise OrganizationDisconnect(
+            message='Organization does not exist.',
+            payload={'id': org_uid}
+        )
 
     # TODO:
     # message = 'Disconnecting organization.' + org_uid

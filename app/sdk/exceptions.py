@@ -1,6 +1,6 @@
 # This file is part of the Jsonify.
 #
-# Copyright (c) 2021 airSlate Inc.
+# Copyright (c) 2021 airSlate, Inc.
 #
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
@@ -23,6 +23,15 @@ class ApiError(Exception):
         rv['status'] = self.status_code
         rv['title'] = self.message
         return rv
+
+
+class InternalServerError(ApiError):
+    def __init__(self, message=None, payload=None):
+        if not message:
+            message = 'Internal Server Error.'
+
+        super(InternalServerError, self).__init__(
+            message, HTTPStatus.INTERNAL_SERVER_ERROR, payload)
 
 
 class ValidationError(ApiError):

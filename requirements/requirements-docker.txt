@@ -1,9 +1,13 @@
-alembic==1.4.3
+-e git+git://github.com/airslate-oss/python-airslate.git#egg=airslate
+alembic==1.5.1
+certifi==2020.12.5
+chardet==4.0.0
 click==7.1.2
-flask-migrate==2.5.3
+flask-migrate==2.6.0
 flask-sqlalchemy==2.4.4
 flask==1.1.2
 gunicorn==20.0.4
+idna==2.10
 itsdangerous==1.1.0
 jinja2==2.11.2
 mako==1.1.4
@@ -12,8 +16,10 @@ pymysql==1.0.2
 python-dateutil==2.8.1
 python-dotenv==0.15.0
 python-editor==1.0.4
+requests==2.25.1
 six==1.15.0
 sqlalchemy==1.3.22
+urllib3==1.26.2
 werkzeug==1.0.1
 
 # The following packages are considered to be unsafe in a requirements file:
