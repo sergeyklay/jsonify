@@ -1,3 +1,5 @@
+-e git://github.com/airslate-oss/python-airslate.git#egg=airslate
+
 flask
 flask-migrate
 flask-sqlalchemy
