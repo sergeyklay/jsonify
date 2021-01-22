@@ -8,10 +8,11 @@
 from flask import request
 
 from app.api import api
-from app.sdk.impl.http.views.connect import handle_connection
+from app.sdk.impl.http.views.organizations import handle_connection
 
 
-@api.route('/organization/connect', methods=['POST'])
+@api.route('/organizations/connect', methods=['POST'])
 def organization_connect():
+    """Connect organization URL."""
     content = request.get_json()
     return handle_connection(content)

@@ -5,9 +5,10 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
-from . import api
+from app.api import api
 
 
-@api.route('/handle/event', methods=['POST'])
-def handle_event():
+@api.route('/events/handle', methods=['POST'])
+def event_handle():
+    """Webhook URL."""
     raise NotImplementedError()

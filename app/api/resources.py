@@ -5,14 +5,15 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
-from . import api
+from flask import request
+
+from app.api import api
+# from app.sdk.impl.http.views.resources import handle_setup
 
 
-@api.route('/resource/fields', methods=['POST'])
-def resource_fields():
-    raise NotImplementedError()
-
-
-@api.route('/resource/settings', methods=['POST'])
-def resource_settings():
+@api.route('/resources/setup', methods=['POST'])
+def resource_setup():
+    """Resource fields URL"""
+    # content = request.get_json()
+    # return handle_setup(content)
     raise NotImplementedError()

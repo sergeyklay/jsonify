@@ -25,11 +25,23 @@ class AddonIdentity:
 
 
 def authenticate(org_uid: str, client_id: str, client_secret: str) -> AddonIdentity:
-    client = Client(
-        base_url=current_app.config.get('API_BASE_URI')
-    )
+    client = Client(base_url=current_app.config.get('API_BASE_URI'))
 
+    # We're expect a response in the following format:
+    #    {
+    #        'meta': {
+    #            'token_type': 'Bearer',
+    #            'expires': 1209000,
+    #            'access_token': '...',
+    #            'refresh_token': '...',
+    #            'domain': '',
+    #        }
+    #    }
+    #
     identity = client.addons.access_token(org_uid, client_id, client_secret)
+
+    if 'meta' not in identity:
+        raise BadRequest(message='The `meta` field is required.')
 
     token = path(identity, 'meta.access_token')
     domain = path(identity, 'meta.domain')
@@ -44,6 +56,6 @@ def authenticate(org_uid: str, client_id: str, client_secret: str) -> AddonIdent
 
     fields = {'expires': expires, 'access_token': token, 'domain': domain}
     missed = [k for k in fields.keys() if not fields[k]]
-    message = map(lambda f: f'The {f} field is required.', missed)
+    message = map(lambda f: f'The `meta.{f}` field is required.', missed)
 
     raise BadRequest(message=list(message))
