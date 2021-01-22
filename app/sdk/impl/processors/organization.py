@@ -13,6 +13,7 @@ from app.models import Organization
 from app.sdk.exceptions import InternalServerError
 from app.sdk.exceptions import OrganizationConnect, OrganizationDisconnect
 from app.sdk.impl.authenticator import authenticate
+from requests.exceptions import RequestException
 
 
 def connect(organization: Organization) -> Organization:
@@ -39,16 +40,26 @@ def connect(organization: Organization) -> Organization:
 
         db.session.rollback()
         raise OrganizationConnect(
-            message='Organization already connected.',
-            payload={'id': organization.organization_uid}
+            message='Already connected.',
+            payload={
+                'detail': 'Organization with UID {} already connected.'.format(
+                    organization.organization_uid
+                )
+            }
         )
-    except exc.SQLAlchemyError:
+    except (exc.SQLAlchemyError, RequestException):
         # TODO:
         # message = 'Error occurred during organization connection.' + exc
         # logger.error(message)
 
         db.session.rollback()
-        raise InternalServerError(payload={'id': organization.organization_uid})
+        raise InternalServerError(
+            payload={
+                'detail': 'Unable to connect organization with UID {}.'.format(
+                    organization.organization_uid
+                )
+            }
+        )
     else:
         db.session.commit()
         # TODO:
@@ -65,8 +76,13 @@ def disconnect(org_uid: str):
     status = bool(rows)
     if not status:
         raise OrganizationDisconnect(
-            message='Organization does not exist.',
-            payload={'id': org_uid}
+            status_code=404,
+            message='Not Found.',
+            payload={
+                'detail': 'Organization with UID {} does not exist.'.format(
+                    org_uid
+                )
+            }
         )
 
     # TODO:
