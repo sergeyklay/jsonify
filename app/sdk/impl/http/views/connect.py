@@ -9,18 +9,18 @@ from http import HTTPStatus
 
 from app.models import Organization
 from app.sdk.collections import path
-from app.sdk.exceptions import InvalidUsage, ValidationError
+from app.sdk.exceptions import BadRequest, ValidationError
 from app.sdk.impl.org_extractor import extract_id
 from app.sdk.impl.processors.organization import connect, disconnect
 
 
 def handle_connection(payload):
     if not payload or not isinstance(payload, dict):
-        raise InvalidUsage('No input data provided')
+        raise BadRequest('No input data provided')
 
     data = payload.get('data')
     if not data or not isinstance(data, dict):
-        raise InvalidUsage('Invalid payload, missed "data"')
+        raise BadRequest('Invalid payload, missed "data"')
 
     should_disconnect = path(payload, 'meta.disconnected') or False
 

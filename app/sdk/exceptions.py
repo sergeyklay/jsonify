@@ -5,6 +5,8 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
+"""Standard exception hierarchy for Jsonify."""
+
 from collections.abc import Sequence
 from http import HTTPStatus
 
@@ -13,7 +15,7 @@ class ApiError(Exception):
     status_code = HTTPStatus.BAD_REQUEST
 
     def __init__(self, message, status_code=None, payload=None):
-        Exception.__init__(self)
+        super().__init__()
         self.message = message
         if status_code is not None:
             self.status_code = status_code
@@ -49,7 +51,7 @@ class InternalServerError(ApiError):
         )
 
 
-class ValidationError(ApiError):
+class BadRequest(ApiError):
     def __init__(self, message, payload=None):
         super().__init__(
             message=message,
@@ -57,7 +59,7 @@ class ValidationError(ApiError):
         )
 
 
-class InvalidUsage(ApiError):
+class ValidationError(BadRequest):
     def __init__(self, message, payload=None):
         super().__init__(
             message=message,
