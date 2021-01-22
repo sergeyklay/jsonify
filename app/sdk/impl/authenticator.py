@@ -13,7 +13,7 @@ from airslate.client import Client
 from flask import current_app
 
 from app.sdk.collections import path
-from app.sdk.exceptions import InternalServerError
+from app.sdk.exceptions import InvalidUsage
 
 
 @dataclass
@@ -42,5 +42,8 @@ def authenticate(org_uid: str, client_id: str, client_secret: str) -> AddonIdent
 
         return AddonIdentity(token, domain, expires)
 
-    # TODO: Make this better
-    raise InternalServerError(message='Unexpected API response')
+    fields = {'expires': expires, 'access_token': token, 'domain': domain}
+    missed = [k for k in fields.keys() if not fields[k]]
+    message = map(lambda f: f'The {f} field is required.', missed)
+
+    raise InvalidUsage(message=list(message))
