@@ -40,12 +40,8 @@ def connect(organization: Organization) -> Organization:
 
         db.session.rollback()
         raise OrganizationConnect(
-            message='Already connected.',
-            payload={
-                'detail': 'Organization with UID {} already connected.'.format(
-                    organization.organization_uid
-                )
-            }
+            message='Already connected',
+            payload={'detail': 'Requested organization already connected.'}
         )
     except (exc.SQLAlchemyError, RequestException):
         # TODO:
@@ -54,11 +50,7 @@ def connect(organization: Organization) -> Organization:
 
         db.session.rollback()
         raise InternalServerError(
-            payload={
-                'detail': 'Unable to connect organization with UID {}.'.format(
-                    organization.organization_uid
-                )
-            }
+            payload={'detail': 'Unable to connect organization.'}
         )
     else:
         db.session.commit()
@@ -77,12 +69,8 @@ def disconnect(org_uid: str):
     if not status:
         raise OrganizationDisconnect(
             status_code=404,
-            message='Not Found.',
-            payload={
-                'detail': 'Organization with UID {} does not exist.'.format(
-                    org_uid
-                )
-            }
+            message='Not Found',
+            payload={'detail': 'Requested organization does not exist.'}
         )
 
     # TODO:

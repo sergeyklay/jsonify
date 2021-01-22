@@ -27,12 +27,16 @@ class ApiError(Exception):
             errors = []
             for message in self.message:
                 error = dict(())
-                error['status'] = self.status_code
+                # JSON API specification says that status member of Error
+                # Object should be expressed as string value.
+                error['status'] = str(self.status_code)
                 error['title'] = message
                 errors.append(error)
         else:
             error = dict(self.payload or ())
-            error['status'] = self.status_code
+            # JSON API specification says that status member of Error
+            # Object should be expressed as string value.
+            error['status'] = str(self.status_code)
             error['title'] = self.message
             errors = [error]
 
@@ -42,7 +46,7 @@ class ApiError(Exception):
 class InternalServerError(ApiError):
     def __init__(self, message=None, payload=None):
         if not message:
-            message = 'Internal Server Error.'
+            message = 'Internal Server Error'
 
         super().__init__(
             message=message,

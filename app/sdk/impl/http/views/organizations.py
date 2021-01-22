@@ -24,21 +24,21 @@ def handle_connection(payload):
 
     should_disconnect = path(payload, 'meta.disconnected') or False
 
-    org_id = extract_id(data)
-    if not org_id:
-        raise ValidationError('Organization UID is missed')
+    org_uid = extract_id(data)
+    if not org_uid:
+        raise ValidationError('Organization id is missed')
 
     # TODO:
     # logger.info(
     #     'Received %s webhook for organization %s' %
-    #     (('disconnect' if should_disconnect else 'connect'), org_id)
+    #     (('disconnect' if should_disconnect else 'connect'), org_uid)
     # )
 
     if should_disconnect:
-        disconnect(org_id)
+        disconnect(org_uid)
         message = 'Organization disconnected.'
     else:
-        connect(Organization.from_uid(org_id))
+        connect(Organization.from_uid(org_uid))
         message = 'Organization connected.'
 
     response = {'message': f'{message}'}
