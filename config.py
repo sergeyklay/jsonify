@@ -48,10 +48,12 @@ class ProductionConfig(Config):
 class DockerConfig(ProductionConfig):
     @staticmethod
     def init_app(app):
+        super().init_app(app)
+
         from logging import StreamHandler
-        log_handler = StreamHandler()
-        log_handler.setLevel('INFO')
-        app.logger.addHandler(log_handler)
+        stream_handler = StreamHandler()
+        stream_handler.setLevel('INFO')
+        app.logger.addHandler(stream_handler)
 
 
 config = {

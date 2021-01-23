@@ -6,14 +6,15 @@
 # the LICENSE file that was distributed with this source code.
 
 from flask import current_app
+from requests.exceptions import RequestException
 from sqlalchemy import exc
 
 from app import db
+from app import logger
 from app.models import Organization
 from app.sdk.exceptions import InternalServerError
 from app.sdk.exceptions import OrganizationConnect, OrganizationDisconnect
 from app.sdk.impl.authenticator import authenticate
-from requests.exceptions import RequestException
 
 
 def connect(organization: Organization) -> Organization:
@@ -33,20 +34,16 @@ def connect(organization: Organization) -> Organization:
 
         db.session.add(organization)
         db.session.flush()
-    except exc.IntegrityError:
-        # TODO:
-        # message = 'Error occurred during organization connection.' + exc
-        # logger.error(message)
+    except exc.IntegrityError as integrity_error:
+        logger.error(integrity_error)
 
         db.session.rollback()
         raise OrganizationConnect(
             message='Already connected',
             payload={'detail': 'Requested organization already connected.'}
         )
-    except (exc.SQLAlchemyError, RequestException):
-        # TODO:
-        # message = 'Error occurred during organization connection.' + exc
-        # logger.error(message)
+    except (exc.SQLAlchemyError, RequestException) as internal_error:
+        logger.error(internal_error)
 
         db.session.rollback()
         raise InternalServerError(
@@ -54,9 +51,10 @@ def connect(organization: Organization) -> Organization:
         )
     else:
         db.session.commit()
-        # TODO:
-        # message = 'Organization connected.'
-        # logger.info(message)
+        logger.info(
+            'Organization %s connected' %
+            organization.organization_uid
+        )
 
         return organization
 
@@ -73,5 +71,4 @@ def disconnect(org_uid: str):
             payload={'detail': 'Requested organization does not exist.'}
         )
 
-    # TODO:
-    # message = 'Disconnecting organization.' + org_uid
+    logger.info('Disconnecting organization %s' % org_uid)

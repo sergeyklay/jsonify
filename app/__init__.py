@@ -31,9 +31,11 @@ Misc variables:
 """
 
 from flask import Flask
+from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.local import LocalProxy
 
-from config import config
+logger = LocalProxy(lambda: current_app.logger)
 
 __copyright__ = 'Copyright (c) 2021 airSlate, Inc.'
 __version__ = '1.0.0a1'
@@ -49,6 +51,8 @@ db = SQLAlchemy()
 
 def create_app(config_name: str) -> Flask:
     """Factory function to create application instance."""
+    from config import config
+
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
