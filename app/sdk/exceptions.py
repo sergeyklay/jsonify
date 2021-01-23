@@ -12,7 +12,7 @@ from http import HTTPStatus
 
 
 class ApiError(Exception):
-    status_code = HTTPStatus.BAD_REQUEST
+    status_code = HTTPStatus.BAD_REQUEST.value
 
     def __init__(self, message, status_code=None, payload=None):
         super().__init__()
@@ -22,8 +22,7 @@ class ApiError(Exception):
         self.payload = payload
 
     def to_dict(self):
-        if isinstance(self.message, Sequence) and \
-                not isinstance(self.message, (str, bytes, bytearray)):
+        if isinstance(self.message, dict):
             errors = []
             for message in self.message:
                 error = dict(())
@@ -46,11 +45,11 @@ class ApiError(Exception):
 class InternalServerError(ApiError):
     def __init__(self, message=None, payload=None):
         if not message:
-            message = 'Internal Server Error'
+            message = HTTPStatus.INTERNAL_SERVER_ERROR.phrase
 
         super().__init__(
             message=message,
-            status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+            status_code=HTTPStatus.INTERNAL_SERVER_ERROR.value,
             payload=payload
         )
 
