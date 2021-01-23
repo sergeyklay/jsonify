@@ -11,7 +11,7 @@ from datetime import datetime
 
 from airslate.client import Client
 from flask import current_app
-
+from app import logger
 from app.sdk.collections import path
 from app.sdk.exceptions import BadRequest
 
@@ -40,11 +40,10 @@ def authenticate(org_uid: str, client_id: str, client_secret: str) -> AddonIdent
     #
     identity = client.addons.access_token(org_uid, client_id, client_secret)
 
-    # TODO:
-    # logger.info(
-    #     'Received identity webhook for organization %s:' %
-    #     (org_uid, identity)
-    # )
+    logger.info(
+        'Received identity webhook for organization %s: %s' %
+        (org_uid, identity)
+    )
 
     if 'meta' not in identity:
         raise BadRequest(message='The `meta` field is required.')

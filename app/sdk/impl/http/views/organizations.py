@@ -7,6 +7,7 @@
 
 from http import HTTPStatus
 
+from app import logger
 from app.models import Organization
 from app.sdk.collections import path
 from app.sdk.exceptions import BadRequest, ValidationError
@@ -28,11 +29,10 @@ def handle_connection(payload):
     if not org_uid:
         raise ValidationError('Organization id is missed')
 
-    # TODO:
-    # logger.info(
-    #     'Received %s webhook for organization %s' %
-    #     (('disconnect' if should_disconnect else 'connect'), org_uid)
-    # )
+    logger.info(
+        'Received %s webhook for organization %s' %
+        (('disconnect' if should_disconnect else 'connect'), org_uid)
+    )
 
     if should_disconnect:
         disconnect(org_uid)
