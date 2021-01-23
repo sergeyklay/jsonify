@@ -5,22 +5,26 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
+from sqlalchemy import Column, Integer, String, Text, TIMESTAMP
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
 
-from app import db
 from app.sdk.exceptions import ValidationError
 
 
-class Organization(db.Model):
+Base = declarative_base()
+
+
+class Organization(Base):
     __tablename__ = 'organizations'
 
-    id = db.Column(db.Integer, primary_key=True)
-    organization_uid = db.Column(db.String(32), nullable=False, unique=True)
-    domain = db.Column(db.String(512), nullable=True)
-    token = db.Column(db.Text, nullable=True)
-    token_expires_at = db.Column(db.TIMESTAMP, nullable=True)
-    created_at = db.Column(db.TIMESTAMP, server_default=func.now())
-    updated_at = db.Column(db.TIMESTAMP, onupdate=func.now())
+    id = Column(Integer, primary_key=True)
+    organization_uid = Column(String(32), nullable=False, unique=True)
+    domain = Column(String(512), nullable=True)
+    token = Column(Text, nullable=True)
+    token_expires_at = Column(TIMESTAMP, nullable=True)
+    created_at = Column(TIMESTAMP, server_default=func.now())
+    updated_at = Column(TIMESTAMP, onupdate=func.now())
 
     @staticmethod
     def from_uid(uid):
