@@ -25,7 +25,9 @@ def path(data: dict, item, default=None):
     >>> d = {'rel': {'org': {'data': {'id': 42}}}}
     >>> path(d, 'rel.org.data.id')
     42
-    >>> path(d, 'rel.org.data.foo')
+    >>> path(d, 'foo.bar.baz.buz', 42)
+    42
+    >>> path(d, 'foo.bar.baz.buz')
     >>>
     """
     def getitem(obj, name: str):
