@@ -18,13 +18,6 @@ class Config:
     API_BASE_URI = os.getenv('API_BASE_URI', 'https://api.airslate.com')
 
     @staticmethod
-    def create_stream_log_handler(level):
-        from logging import StreamHandler
-        file_handler = StreamHandler()
-        file_handler.setLevel(level)
-        return file_handler
-
-    @staticmethod
     def init_app(app):
         pass
 
@@ -35,13 +28,6 @@ class DevelopmentConfig(Config):
         'DEV_DATABASE_URL',
         'sqlite:///' + os.path.join(basedir, 'db-dev.sqlite3')
     )
-
-    @staticmethod
-    def init_app(app):
-        super().init_app(app)
-        app.logger.addHandler(
-            super().create_stream_log_handler('DEBUG')
-        )
 
 
 class TestingConfig(Config):
@@ -62,10 +48,10 @@ class ProductionConfig(Config):
 class DockerConfig(ProductionConfig):
     @staticmethod
     def init_app(app):
-        super().init_app(app)
-        app.logger.addHandler(
-            super().create_stream_log_handler('INFO')
-        )
+        from logging import StreamHandler
+        log_handler = StreamHandler()
+        log_handler.setLevel('INFO')
+        app.logger.addHandler(log_handler)
 
 
 config = {

@@ -4,6 +4,9 @@ Jsonify
 
 Example bot for `<https://developers.airslate.com>`_.
 
+Pre-fill a Slate with information from the uploaded JSON file or URL pointing
+to JSON file.
+
 Usage
 =====
 
