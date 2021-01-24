@@ -52,7 +52,7 @@ def connect(organization: Organization) -> Organization:
     else:
         db.session.commit()
         logger.info(
-            'Organization %s connected' %
+            'Organization %s successfully connected' %
             organization.organization_uid
         )
 
@@ -71,4 +71,7 @@ def disconnect(org_uid: str):
             payload={'detail': 'Requested organization does not exist.'}
         )
 
-    logger.info('Disconnecting organization %s' % org_uid)
+    logger.info(
+        'Organization %s successfully disconnected' %
+        org_uid
+    )
