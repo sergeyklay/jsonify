@@ -5,6 +5,7 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
+from airslate.exceptions import Error as ApiError
 from flask import current_app
 from requests.exceptions import RequestException
 from sqlalchemy import exc
@@ -12,8 +13,7 @@ from sqlalchemy import exc
 from app import db
 from app import logger
 from app.models import Organization
-from app.sdk.exceptions import InternalServerError
-from app.sdk.exceptions import OrganizationConnect, OrganizationDisconnect
+from app.sdk import exceptions
 from app.sdk.impl.authenticator import authenticate
 
 
@@ -34,11 +34,29 @@ def connect(organization: Organization) -> Organization:
 
         db.session.add(organization)
         db.session.flush()
+    except ApiError as api_error:
+        logger.error(
+            'Received error response from API: %s' %
+            api_error.message
+        )
+
+        # Any 4xx errors at this stage means our error
+        if 400 <= api_error.status < 500:
+            message = ('Unable to connect organization due to internal '
+                       ' error. Please contact bot developer.')
+            raise exceptions.InternalServerError(
+                payload={'detail': message}
+            ) from api_error
+        else:
+            raise exceptions.BadRequest(
+                message='API Error',
+                payload={'detail': api_error.message}
+            ) from api_error
     except exc.IntegrityError as integrity_error:
         logger.error(integrity_error)
 
         db.session.rollback()
-        raise OrganizationConnect(
+        raise exceptions.OrganizationConnect(
             message='Already connected',
             payload={'detail': 'Requested organization already connected.'}
         )
@@ -46,7 +64,7 @@ def connect(organization: Organization) -> Organization:
         logger.error(internal_error)
 
         db.session.rollback()
-        raise InternalServerError(
+        raise exceptions.InternalServerError(
             payload={'detail': 'Unable to connect organization.'}
         )
     else:
@@ -65,7 +83,7 @@ def disconnect(org_uid: str):
 
     status = bool(rows)
     if not status:
-        raise OrganizationDisconnect(
+        raise exceptions.OrganizationDisconnect(
             status_code=404,
             message='Not Found',
             payload={'detail': 'Requested organization does not exist.'}
