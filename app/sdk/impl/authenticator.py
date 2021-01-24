@@ -27,6 +27,11 @@ class AddonIdentity:
 def authenticate(org_uid: str, client_id: str, client_secret: str) -> AddonIdentity:
     client = Client(base_url=current_app.config.get('API_BASE_URI'))
 
+    logger.info(
+        'Trying to authenticate bot %s for organization %s' %
+        (client_id, org_uid)
+    )
+
     # We're expect a response in the following format:
     #    {
     #        'meta': {
