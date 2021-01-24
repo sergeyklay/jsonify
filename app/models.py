@@ -6,16 +6,13 @@
 # the LICENSE file that was distributed with this source code.
 
 from sqlalchemy import Column, Integer, String, Text, TIMESTAMP
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 
 from app.sdk.exceptions import ValidationError
 
 
-Base = declarative_base()
-
-
-class Organization(Base):
+class Organization(declarative_base()):
     __tablename__ = 'organizations'
 
     id = Column(Integer, primary_key=True)
