@@ -11,6 +11,7 @@ import os
 
 from flask import abort, current_app, request
 from flask_sqlalchemy import get_debug_queries
+from app import logger
 
 from . import main
 
@@ -25,7 +26,7 @@ def maintained():
 def after_request(response):
     for query in get_debug_queries():
         if query.duration >= current_app.config['APP_SLOW_DB_QUERY_TIME']:
-            current_app.logger.warning(
+            logger.warning(
                 'Slow query: %s\nParameters: %s\nDuration: %fs\nContext: %s\n'
                 % (query.statement, query.parameters, query.duration, query.context)
             )
@@ -45,4 +46,4 @@ def server_shutdown():
 
 @main.route('/')
 def index():
-    return 'JSON prefill add-on.'
+    return 'JSON pre-fill add-on.'

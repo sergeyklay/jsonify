@@ -13,14 +13,14 @@ import os
 from dotenv import load_dotenv
 from flask_migrate import Migrate, upgrade
 
-from app import create_app, db, models
+from app import create_app, models
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path=dotenv_path)
 
 app = create_app(os.getenv('FLASK_CONFIG', 'default'))
-migrate = Migrate(app, db)
+migrate = Migrate(app, models.db)
 
 
 @app.shell_context_processor
@@ -28,7 +28,7 @@ def make_shell_context():
     """Configure flask shell command  to automatically import app objects."""
     return dict(
         app=app,
-        db=db,
+        db=models.db,
         **dict(inspect.getmembers(models, inspect.isclass)))
 
 

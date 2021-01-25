@@ -5,11 +5,15 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
+from datetime import datetime
+
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Text, TIMESTAMP
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import func
 
 from app.sdk.exceptions import ValidationError
+
+db = SQLAlchemy()
 
 
 class Organization(declarative_base()):
@@ -20,8 +24,6 @@ class Organization(declarative_base()):
     domain = Column(String(512), nullable=True)
     token = Column(Text, nullable=True)
     token_expires_at = Column(TIMESTAMP, nullable=True)
-    created_at = Column(TIMESTAMP, server_default=func.now())
-    updated_at = Column(TIMESTAMP, onupdate=func.now())
 
     @staticmethod
     def from_uid(uid):
@@ -31,17 +33,12 @@ class Organization(declarative_base()):
 
         return Organization(organization_uid=uid)
 
-    @property
-    def serialize(self) -> dict:
-        """Return object data in easily serializable format"""
-        return {
-            'id': self.id,
-            'organization_uid': self.organization_uid,
-            'domain': self.domain,
-            'token': self.token,
-            'token_expires_at': self.token_expires_at,
-            'created_at': self.created_at,
-        }
+    def token_expired(self) -> bool:
+        """Check if token is expired."""
+        return (self.token_expires_at - datetime.utcnow()).total_seconds() > 0
+
+    def token_valid(self) -> bool:
+        return self.token is not None and not self.token_expired()
 
     def __repr__(self):
         """Returns the object representation in string format."""

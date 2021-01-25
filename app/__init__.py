@@ -26,13 +26,11 @@ Misc variables:
     __url__
     __version__
     config
-    db
 
 """
 
 from flask import Flask
 from flask import current_app
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.local import LocalProxy
 
 logger = LocalProxy(lambda: current_app.logger)
@@ -46,9 +44,6 @@ __url__ = 'https://github.com/sergeyklay/as-jsonify-bot'
 __description__ = 'Example bot for developers.airslate.com'
 
 
-db = SQLAlchemy()
-
-
 def create_app(config_name: str) -> Flask:
     """Factory function to create application instance."""
     from config import config
@@ -57,14 +52,15 @@ def create_app(config_name: str) -> Flask:
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
+    from app.models import db
     db.init_app(app)
 
     # main blueprint registration
-    from .main import main as main_blueprint
+    from app.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     # api blueprint registration
-    from .api import api as api_blueprint
+    from app.api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api/v1')
 
     return app

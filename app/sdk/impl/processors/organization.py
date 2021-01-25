@@ -10,9 +10,8 @@ from flask import current_app
 from requests.exceptions import RequestException
 from sqlalchemy import exc
 
-from app import db
 from app import logger
-from app.models import Organization
+from app.models import Organization, db
 from app.sdk import exceptions
 from app.sdk.impl.authenticator import authenticate
 
