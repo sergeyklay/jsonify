@@ -8,22 +8,20 @@
 from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Text, TIMESTAMP
-from sqlalchemy.ext.declarative import declarative_base
 
 from app.sdk.exceptions import ValidationError
 
 db = SQLAlchemy()
 
 
-class Organization(declarative_base()):
+class Organization(db.Model):
     __tablename__ = 'organizations'
 
-    id = Column(Integer, primary_key=True)
-    organization_uid = Column(String(32), nullable=False, unique=True)
-    domain = Column(String(512), nullable=True)
-    token = Column(Text, nullable=True)
-    token_expires_at = Column(TIMESTAMP, nullable=True)
+    id = db.Column(db.Integer, primary_key=True)
+    organization_uid = db.Column(db.String(32), nullable=False, unique=True)
+    domain = db.Column(db.String(512), nullable=True)
+    token = db.Column(db.Text, nullable=True)
+    token_expires_at = db.Column(db.TIMESTAMP, nullable=True)
 
     @staticmethod
     def from_uid(uid):
