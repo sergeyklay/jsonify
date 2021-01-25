@@ -13,6 +13,10 @@ from app.sdk.impl.http.views.organizations import handle_connection
 
 @api.route('/organizations/connect', methods=['POST'])
 def organization_connect():
-    """Connect organization URL."""
+    """Handle bot connections.
+
+    Gets notifications when the bot is added to a flow in an
+    organization for the firs time.
+    """
     content = request.get_json()
     return handle_connection(content)
