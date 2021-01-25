@@ -8,12 +8,11 @@
 from flask import request
 
 from app.api import api
-# from app.sdk.impl.http.views.resources import handle_setup
+from app.sdk.impl.http.views.resources import handle_setup
 
 
 @api.route('/resources/setup', methods=['POST'])
 def resource_setup():
     """Resource fields URL"""
-    # content = request.get_json()
-    # return handle_setup(content)
-    raise NotImplementedError()
+    content = request.get_json()
+    return handle_setup(content)

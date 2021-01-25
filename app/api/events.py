@@ -10,5 +10,5 @@ from app.api import api
 
 @api.route('/events/handle', methods=['POST'])
 def event_handle():
-    """Webhook URL."""
+    """Gets all trigger related events."""
     raise NotImplementedError()
