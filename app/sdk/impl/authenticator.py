@@ -10,9 +10,10 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from airslate.client import Client
+from asdicts.dict import path
 from flask import current_app
+
 from app import logger
-from app.sdk.collections import path
 from app.sdk.exceptions import BadRequest
 
 
