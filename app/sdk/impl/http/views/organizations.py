@@ -7,9 +7,10 @@
 
 from http import HTTPStatus
 
+from asdicts.dict import path
+
 from app import logger
 from app.models import Organization
-from app.sdk.collections import path
 from app.sdk.exceptions import BadRequest, ValidationError
 from app.sdk.impl.org_extractor import extract_id
 from app.sdk.impl.processors.organization import connect, disconnect
