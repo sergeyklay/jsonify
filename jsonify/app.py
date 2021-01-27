@@ -14,7 +14,7 @@ Functions:
     configure_app(app: Flask, config_name=None) -> None
     configure_blueprints(app: Flask) -> None
     configure_extensions(app: Flask) -> None
-    configure_shell_context(app: Flask) -> None
+    configure_context_processors(app: Flask) -> None
     configure_tests(app: Flask) -> None
 
 """
@@ -31,7 +31,7 @@ def create_app(config=None) -> Flask:
     configure_app(app, config)
     configure_blueprints(app)
     configure_extensions(app)
-    configure_shell_context(app)
+    configure_context_processors(app)
     configure_tests(app)
 
     return app
@@ -90,7 +90,8 @@ def configure_extensions(app: Flask):
     db.init_app(app)
 
     # Flask-Migrate
-    migrate = Migrate(app, db)
+    migrate = Migrate()
+    migrate.init_app(app, db)
 
     @app.cli.command()
     def deploy():
@@ -99,13 +100,15 @@ def configure_extensions(app: Flask):
         upgrade()
 
 
-def configure_shell_context(app: Flask):
-    """Configure flask shell command  to automatically import app objects."""
+def configure_context_processors(app: Flask):
+    """Configures the context processors."""
     import inspect
     from jsonify import models
 
     @app.shell_context_processor
     def make_shell_context():
+        """Configure flask shell command to automatically
+        import app objects."""
         return dict(
             app=app,
             db=models.db,
