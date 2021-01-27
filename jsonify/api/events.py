@@ -5,7 +5,7 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
-from app.api import api
+from jsonify.api import api
 
 
 @api.route('/events/handle', methods=['POST'])

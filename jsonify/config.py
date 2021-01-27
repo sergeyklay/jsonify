@@ -6,7 +6,6 @@
 # the LICENSE file that was distributed with this source code.
 
 import os
-basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
@@ -16,6 +15,7 @@ class Config:
     BOT_CLIENT_ID = os.getenv('BOT_CLIENT_ID')
     BOT_CLIENT_SECRET = os.getenv('BOT_CLIENT_SECRET')
     API_BASE_URI = os.getenv('API_BASE_URI', 'https://api.airslate.com')
+    BASE_PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
     @staticmethod
     def init_app(app):
@@ -26,7 +26,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv(
         'DEV_DATABASE_URL',
-        'sqlite:///' + os.path.join(basedir, 'db-dev.sqlite3')
+        'sqlite:///' + os.path.join(Config.BASE_PATH, 'db-dev.sqlite3')
     )
 
 
@@ -41,7 +41,7 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.getenv(
         'DATABASE_URL',
-        'sqlite:///' + os.path.join(basedir, 'db.sqlite3')
+        'sqlite:///' + os.path.join(Config.BASE_PATH, 'db.sqlite3')
     )
 
 
