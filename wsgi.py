@@ -7,39 +7,10 @@
 
 """The main entry point for Jsonify."""
 
-import inspect
 import os
 
-from flask_migrate import Migrate, upgrade
-from jsonify import create_app, load_env_vars, models
+from jsonify import create_app, load_env_vars
 
-_basepath = os.path.dirname(os.path.abspath(__file__))
-
-load_env_vars(_basepath)
+load_env_vars(os.path.dirname(os.path.abspath(__file__)))
 
 app = create_app(os.getenv('JSONIFY_CONFIG', 'default'))
-migrate = Migrate(app, models.db)
-
-
-@app.shell_context_processor
-def make_shell_context():
-    """Configure flask shell command  to automatically import app objects."""
-    return dict(
-        app=app,
-        db=models.db,
-        **dict(inspect.getmembers(models, inspect.isclass)))
-
-
-@app.cli.command()
-def test():
-    """Run the unit test."""
-    import unittest
-    tests = unittest.TestLoader().discover('tests')
-    unittest.TextTestRunner(verbosity=2).run(tests)
-
-
-@app.cli.command()
-def deploy():
-    """Run deployment tasks."""
-    # Migrate database to latest revision.
-    upgrade()

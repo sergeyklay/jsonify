@@ -14,6 +14,8 @@ Functions:
     configure_app(app: Flask, config_name=None) -> None
     configure_blueprints(app: Flask) -> None
     configure_extensions(app: Flask) -> None
+    configure_shell_context(app: Flask) -> None
+    configure_tests(app: Flask) -> None
 
 """
 
@@ -29,6 +31,8 @@ def create_app(config=None) -> Flask:
     configure_app(app, config)
     configure_blueprints(app)
     configure_extensions(app)
+    configure_shell_context(app)
+    configure_tests(app)
 
     return app
 
@@ -80,6 +84,39 @@ def configure_blueprints(app: Flask):
 def configure_extensions(app: Flask):
     """Configure extensions for the application."""
     from jsonify.models import db
+    from flask_migrate import Migrate, upgrade
 
     # Flask-SQLAlchemy
     db.init_app(app)
+
+    # Flask-Migrate
+    migrate = Migrate(app, db)
+
+    @app.cli.command()
+    def deploy():
+        """Run deployment tasks."""
+        # Migrate database to latest revision.
+        upgrade()
+
+
+def configure_shell_context(app: Flask):
+    """Configure flask shell command  to automatically import app objects."""
+    import inspect
+    from jsonify import models
+
+    @app.shell_context_processor
+    def make_shell_context():
+        return dict(
+            app=app,
+            db=models.db,
+            **dict(inspect.getmembers(models, inspect.isclass)))
+
+
+def configure_tests(app: Flask):
+    """Configure test command."""
+    @app.cli.command()
+    def test():
+        """Run the unit test."""
+        import unittest
+        tests = unittest.TestLoader().discover('tests')
+        unittest.TextTestRunner(verbosity=2).run(tests)
