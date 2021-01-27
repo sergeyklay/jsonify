@@ -14,7 +14,8 @@ instance.
 
 Functions:
 
-    create_app(config_name: str) -> flask.Flask
+    create_app(config: str) -> flask.Flask
+    load_env_vars(base_path: str) -> None
 
 Misc variables:
 
@@ -25,13 +26,13 @@ Misc variables:
     __license__
     __url__
     __version__
-    config
+    logger
 
 """
 
-from flask import Flask
 from flask import current_app
 from werkzeug.local import LocalProxy
+from jsonify.app import load_env_vars, create_app
 
 logger = LocalProxy(lambda: current_app.logger)
 
@@ -42,25 +43,3 @@ __author__ = 'Serghei Iakovlev'
 __author_email__ = 'i.serghei@pdffiller.com'
 __url__ = 'https://github.com/sergeyklay/as-jsonify-bot'
 __description__ = 'Example bot for developers.airslate.com'
-
-
-def create_app(config_name: str) -> Flask:
-    """Factory function to create application instance."""
-    from config import config
-
-    app = Flask(__name__)
-    app.config.from_object(config[config_name])
-    config[config_name].init_app(app)
-
-    from app.models import db
-    db.init_app(app)
-
-    # main blueprint registration
-    from app.main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
-
-    # api blueprint registration
-    from app.api import api as api_blueprint
-    app.register_blueprint(api_blueprint, url_prefix='/api/v1')
-
-    return app

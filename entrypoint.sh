@@ -34,4 +34,4 @@ while ! flask deploy; do
   fi
 done
 
-exec gunicorn -b :5000 --access-logfile - --error-logfile - jsonify:app
+exec gunicorn -b :5000 --access-logfile - --error-logfile - wsgi:jsonify

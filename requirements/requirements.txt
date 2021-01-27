@@ -1,6 +1,6 @@
 -e git+git://github.com/airslate-oss/python-airslate.git#egg=airslate
 alembic==1.5.2
-asdicts==1.0.0
+asdicts==1.1.0
 certifi==2020.12.5
 chardet==4.0.0
 click==7.1.2
@@ -18,5 +18,5 @@ python-editor==1.0.4
 requests==2.25.1
 six==1.15.0
 sqlalchemy==1.3.22
-urllib3==1.26.2
+urllib3==1.26.3
 werkzeug==1.0.1

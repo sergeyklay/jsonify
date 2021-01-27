@@ -7,8 +7,8 @@
 
 from flask import request
 
-from app.api import api
-from app.sdk.impl.http.views.organizations import handle_connection
+from jsonify.api import api
+from jsonify.sdk.impl.http.views.organizations import handle_connection
 
 
 @api.route('/organizations/connect', methods=['POST'])

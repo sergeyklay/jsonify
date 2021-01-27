@@ -31,6 +31,11 @@ def server_shutdown():
     return 'Shutting down...'
 
 
+@main.route('/405')
+def not_allowed():
+    abort(405)
+
+
 @main.route('/')
 def index():
     return 'JSON pre-fill add-on.'
