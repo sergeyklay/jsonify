@@ -11,9 +11,8 @@ import os
 class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
-    APP_SLOW_DB_QUERY_TIME = 0.5
-    BOT_CLIENT_ID = os.getenv('BOT_CLIENT_ID')
-    BOT_CLIENT_SECRET = os.getenv('BOT_CLIENT_SECRET')
+    JSONIFY_CLIENT_ID = os.getenv('JSONIFY_CLIENT_ID')
+    JSONIFY_CLIENT_SECRET = os.getenv('JSONIFY_CLIENT_SECRET')
     API_BASE_URI = os.getenv('API_BASE_URI', 'https://api.airslate.com')
     BASE_PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 

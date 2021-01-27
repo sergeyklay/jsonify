@@ -8,27 +8,21 @@
 """The routes module for the application."""
 
 import os
+from distutils.util import strtobool
 
-from flask import abort, current_app, request
+from flask import abort
 
 from . import main
 
 
 @main.before_app_request
 def maintained():
-    if os.getenv('FLASK_MAINTENANCE'):
-        abort(503)
-
-
-@main.route('/shutdown')
-def server_shutdown():
-    if not current_app.testing:
-        abort(404)
-    shutdown = request.environ.get('werkzeug.server.shutdown')
-    if not shutdown:
-        abort(500)
-    shutdown()
-    return 'Shutting down...'
+    try:
+        maintenance = strtobool(os.getenv('JSONIFY_MAINTENANCE', 'False'))
+        if bool(maintenance):
+            abort(503)
+    except ValueError:
+        pass
 
 
 @main.route('/405')
