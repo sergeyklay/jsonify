@@ -5,7 +5,7 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
-from airslate.exceptions import Error as ApiError
+from airslate.exceptions import ApiError
 from flask import current_app
 from requests.exceptions import RequestException
 from sqlalchemy import exc
