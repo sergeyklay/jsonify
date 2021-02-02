@@ -24,7 +24,7 @@ class Organization(db.Model):
     token_expires_at = db.Column(db.TIMESTAMP, nullable=True)
 
     @staticmethod
-    def from_uid(uid):
+    def from_id(uid):
         """A factory method to create Organization instance."""
         if not uid:
             raise ValidationError('Organization UID is required')

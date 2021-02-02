@@ -39,7 +39,7 @@ def handle_connection(payload):
         disconnect(org_uid)
         message = 'Organization disconnected.'
     else:
-        connect(Organization.from_uid(org_uid))
+        connect(Organization.from_id(org_uid))
         message = 'Organization connected.'
 
     response = {'message': f'{message}'}
