@@ -47,7 +47,7 @@ def authenticate(org_uid: str, client_id: str, client_secret: str) -> AddonIdent
     identity = client.addons.access_token(org_uid, client_id, client_secret)
 
     logger.info(
-        'Received identity webhook for organization %s: %s' %
+        'Received identity response for organization %s: %s' %
         (org_uid, identity)
     )
 
