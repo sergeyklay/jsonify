@@ -18,7 +18,7 @@ from . import main
 @main.before_app_request
 def maintained():
     try:
-        maintenance = strtobool(os.getenv('JSONIFY_MAINTENANCE', 'False'))
+        maintenance = strtobool(os.getenv('MAINTENANCE_MODE', 'False'))
         if bool(maintenance):
             abort(503)
     except ValueError:

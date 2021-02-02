@@ -18,8 +18,8 @@ from jsonify.sdk.impl.authenticator import authenticate
 
 def connect(organization: Organization) -> Organization:
     try:
-        client_id = current_app.config.get('JSONIFY_CLIENT_ID')
-        client_secret = current_app.config.get('JSONIFY_CLIENT_SECRET')
+        client_id = current_app.config.get('BOT_CLIENT_ID')
+        client_secret = current_app.config.get('BOT_CLIENT_SECRET')
 
         identity = authenticate(
             organization.organization_uid,
