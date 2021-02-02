@@ -8,7 +8,6 @@
 from asdicts.dict import path
 
 
-# TODO: Do I need a class fro this?
 class SettingsTransformer:
 
     CHOICE = 'choice'

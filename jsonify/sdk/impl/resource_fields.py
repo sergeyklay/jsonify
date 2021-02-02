@@ -9,7 +9,9 @@ from dataclasses import dataclass
 
 from asdicts.dict import path
 
-from . import flow, transformers
+from . import flow
+from .transformers import resource_fields
+from .transformers.settings import SettingsTransformer
 
 
 # TODO: Move to addon settings
@@ -43,7 +45,7 @@ class Request:
 
     @staticmethod
     def from_dict(data: dict):
-        transformer = transformers.settings.SettingsTransformer()
+        transformer = SettingsTransformer()
 
         return Request(
             path(data, 'meta.organization.data.id'),
@@ -76,7 +78,8 @@ class Parser:
                 org_id=request.org_id,
             )
         elif setting_name == 'documents':
-            return self._parse_documents(
+            # Create a list of supported documents for a given flow.
+            return supported_documents(
                 settings=request.settings,
                 org_id=request.org_id,
                 flow_id=request.flow_id
@@ -98,72 +101,14 @@ class Parser:
         # TODO: Implement me
         return []
 
-    def _parse_documents(self, settings: dict, org_id: str, flow_id: str):
-        data_type = settings.get('data_type')
-        field_types = supported_mapping(data_type)
-        doc_list = flow.document_list(org_id, flow_id, field_types)
-        return create_from_document_list(doc_list)
-
     def _parse_documents_fields(self, settings: dict, org_id: str, flow_id: str):
         # TODO: Implement me
         return []
 
 
-class ResourceField:
-
-    TYPE = 'slate-addon-variants'
-
-    def __init__(self, filed_id=None, name=None, group_id=None, group_name=None):
-        self._id = filed_id
-        self._name = name
-        self._group_id = group_id
-        self._group_name = group_name
-
-    def __repr__(self):
-        return "<ResourceField: id='%s', name='%s'>" % (self.id, self.name)
-
-    @property
-    def id(self):
-        return self._id
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def group_id(self):
-        return self._group_id
-
-    @property
-    def group_name(self):
-        return self._group_name
-
-    def to_dict(self):
-        result = {
-            'id': self.id,
-            'type': self.TYPE,
-            'attributes': {
-                'name': self.name
-            },
-        }
-
-        if self.group_id is not None and self.group_name is not None:
-            result['attributes']['group'] = {
-                'id': self.group_id,
-                'name': self.group_name,
-            }
-
-        return result
-
-
-def create_from_document_list(doc_list) -> [ResourceField]:
-    result = []
-
-    for document in doc_list:
-        field = ResourceField(
-            filed_id=path(document, 'id'),
-            name=path(document, 'name'),
-        )
-        result.append(field)
-
-    return result
+def supported_documents(settings: dict, org_id: str, flow_id: str):
+    """Create a list of supported documents for a given flow."""
+    data_type = settings.get('data_type')
+    field_types = supported_mapping(data_type)
+    doc_list = flow.document_list(org_id, flow_id, field_types)
+    return resource_fields.documents_to_resource_fields(doc_list)
