@@ -12,7 +12,6 @@ from asdicts.dict import path
 from jsonify import logger
 from jsonify.models import Organization
 from jsonify.sdk.exceptions import BadRequest, ValidationError
-from jsonify.sdk.impl.org_extractor import extract_id
 from jsonify.sdk.impl.processors.organization import connect, disconnect
 
 
@@ -26,7 +25,7 @@ def handle_connection(payload):
 
     should_disconnect = path(payload, 'meta.disconnected') or False
 
-    org_uid = extract_id(data)
+    org_uid = path(data, 'relationships.organization.data.id')
     if not org_uid:
         raise ValidationError('Organization id is missed')
 
