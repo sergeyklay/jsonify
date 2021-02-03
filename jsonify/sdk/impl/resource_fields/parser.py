@@ -9,33 +9,13 @@ from dataclasses import dataclass
 
 from asdicts.dict import path
 
+from jsonify.addon_settings import supported_mapping
 from .transformers import (
     field_to_resource_fields,
     documents_to_resource_fields,
     SettingsTransformer,
 )
 from .. import flow
-
-
-# TODO: Move to addon settings
-def supported_mapping(data_type: str):
-    if data_type == 'table':
-        # Table fields
-        return [
-            'text[]',
-            'number[]',
-            'date[]'
-        ]
-
-    # Single line fields
-    return [
-        'text',
-        'number',
-        'date',
-        'checkbox',
-        'dropdown',
-        'radiogroup'
-    ]
 
 
 @dataclass
@@ -66,44 +46,43 @@ class Response(dict):
         )
 
 
-class Parser:
-    def parse(self, request: Request):
-        setting_name = str(request.setting_name)
+def parse_request(request: Request):
+    setting_name = str(request.setting_name)
 
-        if setting_name == 'lists':
-            return self._parse_lists(
-                settings=request.settings,
-                org_id=request.org_id,
-            )
-        elif setting_name == 'listed_objects_fields':
-            return self._parse_listed_objects_fields(
-                settings=request.settings,
-                org_id=request.org_id,
-            )
-        elif setting_name == 'documents':
-            # Create a list of supported documents for a given flow.
-            return supported_documents(
-                settings=request.settings,
-                org_id=request.org_id,
-                flow_id=request.flow_id
-            )
-        elif setting_name == 'documents_fields':
-            # Create a list of supported document fields for a given flow.
-            return supported_document_fields(
-                settings=request.settings,
-                org_id=request.org_id,
-                flow_id=request.flow_id
-            )
-        else:
-            return []
-
-    def _parse_lists(self, settings: dict, org_id: str):
-        # TODO: Implement me
+    if setting_name == 'lists':
+        return lists_paths(
+            settings=request.settings,
+            org_id=request.org_id,
+        )
+    elif setting_name == 'listed_objects_fields':
+        return fields_except_lists(
+            settings=request.settings,
+            org_id=request.org_id,
+        )
+    elif setting_name == 'documents':
+        # Create a list of supported documents for a given flow.
+        return supported_documents(
+            settings=request.settings,
+            org_id=request.org_id,
+            flow_id=request.flow_id
+        )
+    elif setting_name == 'documents_fields':
+        # Create a list of supported document fields for a given flow.
+        return supported_document_fields(
+            settings=request.settings,
+            org_id=request.org_id,
+            flow_id=request.flow_id
+        )
+    else:
         return []
 
-    def _parse_listed_objects_fields(self, settings: dict, org_id: str):
-        # TODO: Implement me
-        return []
+
+def fields_except_lists(settings: dict, org_id: str):
+    pass
+
+
+def lists_paths(settings: dict, org_id: str):
+    pass
 
 
 def supported_document_fields(settings: dict, org_id: str, flow_id: str):
