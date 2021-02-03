@@ -7,7 +7,7 @@
 
 from asdicts.dict import path
 
-from . import models
+from jsonify.resource_fields import models
 
 
 class SettingsTransformer:
@@ -46,6 +46,7 @@ class SettingsTransformer:
             return path(setting, 'data.value')
         else:
             return None
+
 
 def documents_to_resource_fields(documents):
     result = []

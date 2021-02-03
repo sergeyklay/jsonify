@@ -9,13 +9,13 @@ from dataclasses import dataclass
 
 from asdicts.dict import path
 
+from jsonify import flow
 from jsonify.addon_settings import supported_mapping
-from .transformers import (
+from jsonify.resource_fields.transformers import (
     field_to_resource_fields,
     documents_to_resource_fields,
     SettingsTransformer,
 )
-from .. import flow
 
 
 @dataclass

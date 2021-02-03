@@ -12,9 +12,9 @@ from flask import request
 
 from jsonify import logger
 from jsonify.api import api
+from jsonify.exceptions import BadRequest, ValidationError
 from jsonify.models import Organization
-from jsonify.sdk.exceptions import BadRequest, ValidationError
-from jsonify.sdk.impl.processors.organization import connect, disconnect
+from jsonify.processors.organization import connect, disconnect
 
 
 @api.route('/organizations/connect', methods=['POST'])
