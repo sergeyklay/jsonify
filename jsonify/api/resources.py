@@ -8,12 +8,12 @@
 from flask import request
 
 from jsonify import logger
-from jsonify.api import api
 from jsonify.sdk.impl.resource_fields.parser import (
     Response,
     parse_request,
     create_request,
 )
+from . import api
 
 
 @api.route('/resources/setup', methods=['POST'])
