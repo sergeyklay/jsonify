@@ -7,6 +7,8 @@
 
 from asdicts.dict import path
 
+from . import models
+
 
 class SettingsTransformer:
 
@@ -44,3 +46,31 @@ class SettingsTransformer:
             return path(setting, 'data.value')
         else:
             return None
+
+def documents_to_resource_fields(documents):
+    result = []
+
+    for document in documents:
+        field = models.ResourceField(
+            rf_id=path(document, 'id'),
+            name=path(document, 'name'),
+        )
+        result.append(field)
+
+    return result
+
+
+def field_to_resource_fields(fields):
+    result = []
+
+    for field in fields:
+        rf = models.DocumentResourceField(
+            rf_id=path(field, 'id'),
+            name=path(field, 'name'),
+            type_name=path(field, 'icon_type'),
+            doc_id=path(field, 'group.id'),
+            doc_name=path(field, 'group.name'),
+        )
+        result.append(rf)
+
+    return result

@@ -9,9 +9,12 @@ from dataclasses import dataclass
 
 from asdicts.dict import path
 
-from . import flow
-from .transformers import resource_fields
-from .transformers.settings import SettingsTransformer
+from .transformers import (
+    field_to_resource_fields,
+    documents_to_resource_fields,
+    SettingsTransformer,
+)
+from .. import flow
 
 
 # TODO: Move to addon settings
@@ -85,7 +88,8 @@ class Parser:
                 flow_id=request.flow_id
             )
         elif setting_name == 'documents_fields':
-            return self._parse_documents_fields(
+            # Create a list of supported document fields for a given flow.
+            return supported_document_fields(
                 settings=request.settings,
                 org_id=request.org_id,
                 flow_id=request.flow_id
@@ -101,9 +105,13 @@ class Parser:
         # TODO: Implement me
         return []
 
-    def _parse_documents_fields(self, settings: dict, org_id: str, flow_id: str):
-        # TODO: Implement me
-        return []
+
+def supported_document_fields(settings: dict, org_id: str, flow_id: str):
+    """Create a list of supported document fields for a given flow."""
+    data_type = settings.get('data_type')
+    field_types = supported_mapping(data_type)
+    field_list = flow.field_list(org_id, flow_id, field_types)
+    return field_to_resource_fields(field_list)
 
 
 def supported_documents(settings: dict, org_id: str, flow_id: str):
@@ -111,4 +119,4 @@ def supported_documents(settings: dict, org_id: str, flow_id: str):
     data_type = settings.get('data_type')
     field_types = supported_mapping(data_type)
     doc_list = flow.document_list(org_id, flow_id, field_types)
-    return resource_fields.documents_to_resource_fields(doc_list)
+    return documents_to_resource_fields(doc_list)
