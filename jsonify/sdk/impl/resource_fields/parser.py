@@ -26,24 +26,24 @@ class Request:
     setting_name: str
     settings: dict
 
-    @staticmethod
-    def from_dict(data: dict):
-        transformer = SettingsTransformer()
-
-        return Request(
-            path(data, 'meta.organization.data.id'),
-            path(data, 'data.relationships.organization_addon.data.id'),
-            path(data, 'data.relationships.slate.data.id'),
-            path(data, 'data.attributes.setting_name'),
-            transformer.transform(path(data, 'data.attributes.settings')),
-        )
-
 
 class Response(dict):
     def __init__(self, fields):
         super().__init__(
             data=[field.to_dict() for field in fields]
         )
+
+
+def create_request(data: dict):
+    transformer = SettingsTransformer()
+
+    return Request(
+        path(data, 'meta.organization.data.id'),
+        path(data, 'data.relationships.organization_addon.data.id'),
+        path(data, 'data.relationships.slate.data.id'),
+        path(data, 'data.attributes.setting_name'),
+        transformer.transform(path(data, 'data.attributes.settings')),
+    )
 
 
 def parse_request(request: Request):

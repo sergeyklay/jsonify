@@ -7,12 +7,24 @@
 
 from flask import request
 
+from jsonify import logger
 from jsonify.api import api
-from jsonify.sdk.impl.http.views.resources import handle_setup
+from jsonify.sdk.impl.resource_fields.parser import (
+    Response,
+    parse_request,
+    create_request,
+)
 
 
 @api.route('/resources/setup', methods=['POST'])
 def resource_setup():
     """Resource fields URL"""
-    content = request.get_json()
-    return handle_setup(content)
+    contents = request.get_json()
+    logger.info('Received resource payload %s' % contents)
+
+    fields = parse_request(create_request(contents))
+    response = Response(fields)
+
+    logger.info('Return response %s' % response)
+
+    return response
