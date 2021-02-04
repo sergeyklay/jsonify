@@ -10,10 +10,9 @@ from flask import current_app
 from requests.exceptions import RequestException
 from sqlalchemy import exc
 
-from jsonify import logger
+from jsonify import logger, exceptions
+from jsonify.authenticator import authenticate
 from jsonify.models import Organization, db
-from jsonify.sdk import exceptions
-from jsonify.sdk.impl.authenticator import authenticate
 
 
 def connect(organization: Organization) -> Organization:

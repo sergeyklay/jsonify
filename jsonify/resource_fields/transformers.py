@@ -47,6 +47,7 @@ class SettingsTransformer:
         else:
             return None
 
+
 def documents_to_resource_fields(documents):
     result = []
 

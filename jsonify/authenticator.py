@@ -14,7 +14,7 @@ from asdicts.dict import path
 from flask import current_app
 
 from jsonify import logger
-from jsonify.sdk.exceptions import BadRequest
+from jsonify.exceptions import BadRequest
 
 
 @dataclass

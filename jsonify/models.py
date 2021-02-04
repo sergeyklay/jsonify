@@ -9,7 +9,7 @@ from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
 
-from jsonify.sdk.exceptions import ValidationError
+from jsonify.exceptions import ValidationError
 
 db = SQLAlchemy()
 

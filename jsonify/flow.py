@@ -9,7 +9,7 @@ from airslate.client import Client
 from airslate.entities.documents import Document
 from asdicts.dict import path
 
-from jsonify.sdk.impl.client_factory import create_client
+from jsonify.client_factory import create_client
 
 
 def get_documents(flow_id: str, client: Client):

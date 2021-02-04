@@ -7,7 +7,6 @@
 
 """Standard exception hierarchy for Jsonify."""
 
-from collections.abc import Sequence
 from http import HTTPStatus
 
 
