@@ -7,7 +7,7 @@
 
 from asdicts.dict import path
 
-from jsonify.resource_fields import models
+from . import models
 
 
 class SettingsTransformer:

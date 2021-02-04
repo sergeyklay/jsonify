@@ -11,7 +11,7 @@ from asdicts.dict import path
 
 from jsonify import flow
 from jsonify.addon_settings import supported_mapping
-from jsonify.resource_fields.transformers import (
+from .transformers import (
     field_to_resource_fields,
     documents_to_resource_fields,
     SettingsTransformer,
