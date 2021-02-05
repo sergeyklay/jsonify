@@ -5,9 +5,8 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code
 
-import time
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from airslate.client import Client
 from asdicts.dict import path
@@ -59,10 +58,7 @@ def authenticate(org_uid: str, client_id: str, client_secret: str) -> AddonIdent
     expires = path(identity, 'meta.expires')
 
     if expires and token and domain:
-        expires = datetime.fromtimestamp(
-            int(time.time()) + int(expires)
-        )
-
+        expires = datetime.utcnow() + timedelta(seconds=int(expires))
         return AddonIdentity(token, domain, expires)
 
     fields = {'expires': expires, 'access_token': token, 'domain': domain}

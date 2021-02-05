@@ -18,8 +18,7 @@ SINGLE_LINE_FIELDS = [
     'checkbox',
     'dropdown',
     'radiogroup',
-],
-
+]
 
 def supported_mapping(data_type: str):
     if data_type == 'table':
