@@ -45,7 +45,8 @@ class SettingsTransformer:
         if setting_type in [self.CHOICE, self.RADIO_GROUP_MANUAL]:
             return path(setting, 'data.value')
         else:
-            return None
+            # Otherwise return the data or None
+            return path(setting, 'data')
 
 
 def documents_to_resource_fields(documents):
