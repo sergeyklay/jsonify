@@ -19,7 +19,8 @@ def get_documents(flow_id: str, client: Client):
 
 def document_list(org_id: str, flow_id: str, fields_types=None):
     """Create a list of documents ids and names from a given flow."""
-    documents = get_documents(flow_id, create_client(org_id))
+    client = create_client(org_id)
+    documents = get_documents(flow_id, client)
 
     if fields_types is not None:
         documents = _filter_documents(documents, fields_types)
@@ -29,7 +30,8 @@ def document_list(org_id: str, flow_id: str, fields_types=None):
 
 def field_list(org_id: str, flow_id: str, fields_types=None):
     """Get supported fields for a given flow."""
-    documents = get_documents(flow_id, create_client(org_id))
+    client = create_client(org_id)
+    documents = get_documents(flow_id, client)
     return _filter_fields(documents, fields_types)
 
 

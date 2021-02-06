@@ -18,7 +18,7 @@ from jsonify.resource_fields.parser import (
 
 @api.route('/resources/setup', methods=['POST'])
 def resource_setup():
-    """Resource fields URL"""
+    """Handle resource fields setting."""
     contents = request.get_json()
     logger.info('Received resource payload %s' % contents)
 
