@@ -49,6 +49,21 @@ class SettingsTransformer:
             return path(setting, 'data')
 
 
+def string_list_to_resource_fields(string_list):
+    result = []
+    for item in string_list:
+        result.append(string_to_resource_field(item))
+
+    return result
+
+
+def string_to_resource_field(item):
+    return models.ResourceField(
+        rf_id=item,
+        name=item,
+    )
+
+
 def documents_to_resource_fields(documents):
     result = []
 

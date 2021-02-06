@@ -10,10 +10,12 @@ from dataclasses import dataclass
 from asdicts.dict import path
 
 from jsonify import flow
+from jsonify import json
 from jsonify.addon_settings import supported_mapping
 from .transformers import (
     field_to_resource_fields,
     documents_to_resource_fields,
+    string_list_to_resource_fields,
     SettingsTransformer,
 )
 
@@ -50,6 +52,7 @@ def parse_request(request: Request):
     setting_name = str(request.setting_name)
 
     if setting_name == 'lists':
+        # Create a list of paths from a given JSON.
         return lists_paths(
             settings=request.settings,
             org_id=request.org_id,
@@ -82,7 +85,11 @@ def fields_except_lists(settings: dict, org_id: str):
 
 
 def lists_paths(settings: dict, org_id: str):
-    pass
+    """Create a list of paths from a given JSON."""
+    storage = json.create_storage(settings, org_id)
+    decoder = json.JsonDecoder(storage.contents)
+    paths = decoder.list_paths()
+    return string_list_to_resource_fields(paths)
 
 
 def supported_document_fields(settings: dict, org_id: str, flow_id: str):
