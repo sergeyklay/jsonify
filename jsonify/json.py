@@ -6,25 +6,18 @@
 # the LICENSE file that was distributed with this source code.
 
 import json
-from urllib.request import urlopen, Request
+from os import environ
 from urllib.error import HTTPError
+from urllib.request import urlopen, Request
+
 from jsonify.exceptions import ValidationError, BadRequest
-
-SETTING_JSON_URL = 'json_url'
-SETTING_ATTACHMENT = 'attachment'
-
-FETCH_CONTENTS_TIMEOUT = 5  # 5 seconds max
-
-CRAWLER_USER_AGENT = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) ' +
-                      'AppleWebKit/605.1.15 (KHTML, like Gecko) ' +
-                      'Version/14.0.3 Safari/605.1.15')
 
 
 def create_storage(settings, org_id):
-    if SETTING_JSON_URL in settings:
-        return JsonUrlStorage(settings[SETTING_JSON_URL])
+    if 'json_url' in settings:
+        return JsonUrlStorage(settings['json_url'])
 
-    if SETTING_ATTACHMENT in settings:
+    if 'attachment' in settings:
         return JsonFileStorage()
 
     raise ValidationError('Invalid storage settings')
@@ -37,9 +30,16 @@ class JsonUrlStorage:
     @property
     def contents(self):
         try:
-            headers = {'User-Agent': CRAWLER_USER_AGENT}
+            user_agent = environ.get('CRAWLER_USER_AGENT')
+            timeout = int(environ.get('CRAWLER_TIMEOUT', 5))
+
+            if not user_agent:
+                headers = {}
+            else:
+                headers = {'User-Agent': user_agent}
+
             request = Request(self.url, headers=headers)
-            with urlopen(request, timeout=FETCH_CONTENTS_TIMEOUT) as response:
+            with urlopen(request, timeout=timeout) as response:
                 contents = response.read().decode('utf-8')
 
             return contents
@@ -69,7 +69,7 @@ class JsonDecoder:
 
         >>> my_dict = {'a': [1, 2], 'b': 42, 'c': {'c1': 17, 'c2': [1, 2, 3]}}
         >>> my_result = self.list_paths(my_dict)
-        >>> print(list(my_result))
+        >>> print(my_result)
         ['a', 'c.c2']
         """
         result = []
