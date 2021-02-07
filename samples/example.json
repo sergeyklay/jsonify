@@ -1,0 +1,39 @@
+{
+  "bookkeeping": {
+    "contacts": {
+      "pones": [
+        123456789,
+        234567890,
+        345678901
+      ],
+      "emails": [
+        "bookkeeping@acme.com"
+      ]
+    },
+    "staff": {
+      "total": 3,
+      "employees": {
+        "full_time": [
+          {
+            "name": "Sonoo",
+            "email": "sonoo@acme.com",
+            "salary": 56000,
+            "married": true
+          },
+          {
+            "name": "Ram",
+            "email": "ram@acme.com",
+            "salary": 65000,
+            "married": true
+          },
+          {
+            "name": "Bob",
+            "email": "dob@acme.com",
+            "salary": 42000,
+            "married": true
+          }
+        ]
+      }
+    }
+  }
+}
