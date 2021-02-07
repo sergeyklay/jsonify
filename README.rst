@@ -23,7 +23,7 @@ Then, export required variables:
 
 .. code-block:: bash
 
-   $ export FLASK_DEBUG=1 FLASK_ENV=development FLASK_APP=wsgi.py
+   $ export FLASK_DEBUG=1 FLASK_APP=runner.py BOT_ENVIRONMENT=development
 
 After that see all available commands using ``--help`` option as follows:
 

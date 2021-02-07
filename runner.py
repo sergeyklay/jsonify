@@ -13,4 +13,5 @@ from bot.app import create_app, load_env_vars
 
 load_env_vars(os.path.dirname(os.path.abspath(__file__)))
 
-app = create_app(os.getenv('BOT_CONFIG', 'default'))
+configuration = os.getenv('BOT_ENVIRONMENT', 'default').lower()
+app = create_app(configuration)
