@@ -58,7 +58,8 @@ def parse_request(request: Request):
             org_id=request.org_id,
         )
     elif setting_name == 'listed_objects_fields':
-        return fields_except_lists(
+        # Create a list of fields from a given path in a JSON.
+        return fields_from_lists(
             settings=request.settings,
             org_id=request.org_id,
         )
@@ -80,8 +81,12 @@ def parse_request(request: Request):
         return []
 
 
-def fields_except_lists(settings: dict, org_id: str):
-    pass
+def fields_from_lists(settings: dict, org_id: str):
+    """Create a list of fields from a given path in a JSON."""
+    storage = json.create_storage(settings, org_id)
+    decoder = json.JsonDecoder(storage.contents)
+    fields = decoder.fields(settings.get('list'))
+    return string_list_to_resource_fields(fields)
 
 
 def lists_paths(settings: dict, org_id: str):
