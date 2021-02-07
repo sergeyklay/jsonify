@@ -9,7 +9,7 @@ from flask import request
 
 from bot import logger
 from bot.api import api
-from bot.resource_fields.parser import (
+from bot.resources.parser import (
     Response,
     parse_request,
     create_request,

@@ -8,43 +8,41 @@
 class BaseResource:
     TYPE = 'slate-addon-variants'
 
-    def __init__(self, rf_id=None, name=None):
-        self._id = rf_id
+    def __init__(self, resource_id=None, name=None):
+        self._resource_id = resource_id
         self._name = name
 
     @property
     def id(self):
-        return self._id
+        return self._resource_id
 
     @property
     def name(self):
         return self._name
 
 
-class DocumentResourceField(BaseResource):
-    def __init__(self, rf_id=None, name=None, type_name=None,
-                 doc_id=None, doc_name=None):
-        super().__init__(rf_id, name)
-        self._type = type_name
-        self._doc_id = doc_id
-        self._doc_name = doc_name
+class Document(BaseResource):
+    def __init__(self, resource_id=None, name=None, resource_type=None,
+                 document_id=None, document_name=None):
+        super().__init__(resource_id, name)
+        self._resource_type = resource_type
+        self._document_id = document_id
+        self._document_name = document_name
 
     def __repr__(self):
-        return "<DocumentResourceField: id='%s', name='%s'>" % (
-            self.id, self.name
-        )
+        return "<Document: id='%s', name='%s'>" % (self.id, self.name)
 
     @property
     def type(self):
-        return self._type
+        return self._resource_type
 
     @property
     def document_id(self):
-        return self._doc_id
+        return self._document_id
 
     @property
     def document_name(self):
-        return self._doc_name
+        return self._document_name
 
     def to_dict(self):
         return {
@@ -61,14 +59,14 @@ class DocumentResourceField(BaseResource):
         }
 
 
-class ResourceField(BaseResource):
+class Field(BaseResource):
     def __init__(self, rf_id=None, name=None, group_id=None, group_name=None):
         super().__init__(rf_id, name)
         self._group_id = group_id
         self._group_name = group_name
 
     def __repr__(self):
-        return "<ResourceField: id='%s', name='%s'>" % (self.id, self.name)
+        return "<Field: id='%s', name='%s'>" % (self.id, self.name)
 
     @property
     def group_id(self):

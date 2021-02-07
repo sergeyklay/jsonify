@@ -11,7 +11,7 @@ from asdicts.dict import path
 
 from bot import flow
 from bot import json
-from bot.addon_settings import supported_mapping
+from bot.settings import supported_mapping
 from .transformers import (
     field_to_resource_fields,
     documents_to_resource_fields,
