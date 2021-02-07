@@ -7,9 +7,9 @@
 
 from flask import request
 
-from addon import logger
-from addon.api import api
-from addon.resource_fields.parser import (
+from bot import logger
+from bot.api import api
+from bot.resource_fields.parser import (
     Response,
     parse_request,
     create_request,

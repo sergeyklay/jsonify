@@ -10,9 +10,9 @@ from flask import current_app
 from requests.exceptions import RequestException
 from sqlalchemy import exc
 
-from addon import logger, exceptions
-from addon.authenticator import authenticate
-from addon.models import Organization, db
+from bot import logger, exceptions
+from bot.authenticator import authenticate
+from bot.models import Organization, db
 
 
 def connect(organization: Organization) -> Organization:
