@@ -1,5 +1,4 @@
--e git://github.com/airslate-oss/python-airslate.git#egg=airslate
-
+airslate
 asdicts
 flask
 flask-migrate
