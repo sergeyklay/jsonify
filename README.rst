@@ -25,11 +25,17 @@ Then, export required variables:
 
    $ export FLASK_DEBUG=1 FLASK_APP=runner.py BOT_ENVIRONMENT=development
 
-After that see all available commands using ``--help`` option as follows:
+After that run migrations:
 
 .. code-block:: bash
 
-   $ flask --help
+   $ flask db upgrade
+
+Finally run the server:
+
+.. code-block:: bash
+
+   $ flask run --port 5000
 
 Docker
 ^^^^^^
