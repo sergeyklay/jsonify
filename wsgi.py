@@ -9,7 +9,7 @@
 
 import os
 
-from jsonify import create_app, load_env_vars
+from addon.app import create_app, load_env_vars
 
 load_env_vars(os.path.dirname(os.path.abspath(__file__)))
 

@@ -20,6 +20,7 @@ SINGLE_LINE_FIELDS = [
     'radiogroup',
 ]
 
+
 def supported_mapping(data_type: str):
     if data_type == 'table':
         return TABLE_FIELDS

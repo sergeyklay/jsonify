@@ -21,8 +21,8 @@ Functions:
 
 from flask import jsonify
 
-from jsonify.exceptions import ApiError
-from jsonify.main import main
+from addon.exceptions import ApiError
+from addon.main import main
 
 
 @main.app_errorhandler(ApiError)
