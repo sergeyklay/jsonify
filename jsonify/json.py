@@ -10,6 +10,8 @@ from os import environ
 from urllib.error import HTTPError
 from urllib.request import urlopen, Request
 
+from asdicts.dict import path
+
 from jsonify.exceptions import ValidationError, BadRequest
 
 
@@ -68,33 +70,49 @@ class JsonDecoder:
         """Create paths of all nested dictionary values.
 
         >>> my_dict = {'a': [1, 2], 'b': 42, 'c': {'c1': 17, 'c2': [1, 2, 3]}}
-        >>> my_result = self.list_paths(my_dict)
+        >>> my_result = self.list_paths()
         >>> print(my_result)
         ['a', 'c.c2']
         """
         result = []
-        paths = self.find_list_fields(self.contents)
+        paths = self._find_list_fields(self.contents)
 
         for p in map(lambda x: '.'.join(x), paths):
             result.append(p)
 
         return result
 
-    def find_list_fields(self, obj, path=None):
+    def fields(self, the_path):
+        """Get self.contents[the_path] dictionary keys as a list.
+
+        >>> my_dict = {'a': {'a1', 1, 'a2': 2}}
+        >>> my_result = self.fields('a')
+        >>> print(my_result)
+        ['a1', 'a2']
+        """
+        result = []
+        first_object = path(self.contents, the_path)
+        if isinstance(first_object, list) and len(first_object):
+            first_object = first_object[0]
+        if isinstance(first_object, dict):
+            result = first_object.keys()
+        return result
+
+    def _find_list_fields(self, obj, container=None):
         """Create paths of all nested dictionary values.
 
         >>> my_dict = {'a': [1, 2], 'b': 42, 'c': {'c1': 17, 'c2': [1, 2, 3]}}
-        >>> result = self.find_list_fields(my_dict)
+        >>> result = self._find_list_fields(my_dict)
         >>> print(list(result))
         [['a'], ['c', 'c2']]
         """
-        if path is None:
-            path = []
+        if container is None:
+            container = []
 
         for k, v in obj.items():
-            new_path = path + [k]
+            new_container = container + [k]
             if isinstance(v, dict):
-                for u in self.find_list_fields(v, new_path):
+                for u in self._find_list_fields(v, new_container):
                     yield u
             elif isinstance(v, list):
-                yield new_path
+                yield new_container
