@@ -58,7 +58,7 @@ def string_list_to_resource_fields(string_list):
 
 
 def string_to_resource_field(item):
-    return models.ResourceField(
+    return models.Field(
         rf_id=item,
         name=item,
     )
@@ -68,7 +68,7 @@ def documents_to_resource_fields(documents):
     result = []
 
     for document in documents:
-        field = models.ResourceField(
+        field = models.Field(
             rf_id=path(document, 'id'),
             name=path(document, 'name'),
         )
@@ -81,12 +81,12 @@ def field_to_resource_fields(fields):
     result = []
 
     for field in fields:
-        rf = models.DocumentResourceField(
-            rf_id=path(field, 'id'),
+        rf = models.Document(
+            resource_id=path(field, 'id'),
             name=path(field, 'name'),
-            type_name=path(field, 'icon_type'),
-            doc_id=path(field, 'group.id'),
-            doc_name=path(field, 'group.name'),
+            resource_type=path(field, 'icon_type'),
+            document_id=path(field, 'group.id'),
+            document_name=path(field, 'group.name'),
         )
         result.append(rf)
 

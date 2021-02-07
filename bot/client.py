@@ -19,11 +19,11 @@ def create_client(org_id=None) -> Client:
     if org_id is None:
         return Client(base_url=current_app.config.get('API_BASE_URI'))
 
-    config = prepare_config(org_id)
+    config = _prepare_config(org_id)
     return Client(base_url=current_app.config.get('API_BASE_URI'), **config)
 
 
-def prepare_config(org_id: str):
+def _prepare_config(org_id: str):
     """Prepare configuration for :class:`Client` instance."""
     query = db.session.query(Organization).filter_by(organization_uid=org_id)
 
