@@ -9,9 +9,9 @@ from airslate.client import Client
 from flask import current_app
 from sqlalchemy.orm.exc import NoResultFound
 
-from jsonify import logger
-from jsonify.models import Organization, db
-from jsonify.processors.organization import connect
+from . import logger
+from .models import Organization, db
+from .processors.organization import connect
 
 
 def create_client(org_id=None) -> Client:

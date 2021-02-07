@@ -12,8 +12,8 @@ from airslate.client import Client
 from asdicts.dict import path
 from flask import current_app
 
-from jsonify import logger
-from jsonify.exceptions import BadRequest
+from . import logger
+from .exceptions import BadRequest
 
 
 @dataclass

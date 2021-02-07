@@ -23,7 +23,7 @@ FROM python:3.10-rc-alpine AS runtime-image
 
 ## set environment variables
 ENV PATH="/opt/venv/bin:$PATH"
-ENV FLASK_APP=jsonify.py
+ENV FLASK_APP=wsgi.py
 ENV FLASK_CONFIG docker
 
 ## copy Python dependencies from build image

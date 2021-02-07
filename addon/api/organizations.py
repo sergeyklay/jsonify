@@ -10,11 +10,11 @@ from http import HTTPStatus
 from asdicts.dict import path
 from flask import request
 
-from jsonify import logger
-from jsonify.api import api
-from jsonify.exceptions import BadRequest, ValidationError
-from jsonify.models import Organization
-from jsonify.processors.organization import connect, disconnect
+from addon import logger
+from addon.api import api
+from addon.exceptions import BadRequest, ValidationError
+from addon.models import Organization
+from addon.processors.organization import connect, disconnect
 
 
 @api.route('/organizations/connect', methods=['POST'])

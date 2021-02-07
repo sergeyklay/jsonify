@@ -9,7 +9,7 @@ import unittest
 
 from flask import current_app
 
-from jsonify.app import create_app
+from addon.app import create_app
 
 
 class BaseTestCase(unittest.TestCase):

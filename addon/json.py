@@ -12,7 +12,7 @@ from urllib.request import urlopen, Request
 
 from asdicts.dict import path
 
-from jsonify.exceptions import ValidationError, BadRequest
+from .exceptions import ValidationError, BadRequest
 
 
 def create_storage(settings, org_id):

@@ -32,13 +32,12 @@ Misc variables:
 
 from flask import current_app
 from werkzeug.local import LocalProxy
-from jsonify.app import load_env_vars, create_app
 
 # TODO: Move outside or use builtin logger
 logger = LocalProxy(lambda: current_app.logger)
 
 __copyright__ = 'Copyright (c) 2021 airSlate, Inc.'
-__version__ = '1.0.0a1'
+__version__ = '1.0.0b1'
 __license__ = 'Apache 2.0'
 __author__ = 'Serghei Iakovlev'
 __author_email__ = 'i.serghei@pdffiller.com'
