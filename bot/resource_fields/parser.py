@@ -9,9 +9,9 @@ from dataclasses import dataclass
 
 from asdicts.dict import path
 
-from addon import flow
-from addon import json
-from addon.addon_settings import supported_mapping
+from bot import flow
+from bot import json
+from bot.addon_settings import supported_mapping
 from .transformers import (
     field_to_resource_fields,
     documents_to_resource_fields,

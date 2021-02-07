@@ -10,11 +10,11 @@ from http import HTTPStatus
 from asdicts.dict import path
 from flask import request
 
-from addon import logger
-from addon.api import api
-from addon.exceptions import BadRequest, ValidationError
-from addon.models import Organization
-from addon.processors.organization import connect, disconnect
+from bot import logger
+from bot.api import api
+from bot.exceptions import BadRequest, ValidationError
+from bot.models import Organization
+from bot.processors.organization import connect, disconnect
 
 
 @api.route('/organizations/connect', methods=['POST'])
