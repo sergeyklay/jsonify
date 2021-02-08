@@ -75,8 +75,8 @@ def connect(organization: Organization) -> Organization:
         return organization
 
 
-def disconnect(org_uid: str):
-    rows = db.session.query(Organization).filter_by(organization_uid=org_uid).delete()
+def disconnect(org_id: str):
+    rows = db.session.query(Organization).filter_by(organization_uid=org_id).delete()
     db.session.commit()
 
     status = bool(rows)
@@ -87,7 +87,4 @@ def disconnect(org_uid: str):
             payload={'detail': 'Requested organization does not exist.'}
         )
 
-    logger.info(
-        'Organization %s successfully disconnected' %
-        org_uid
-    )
+    logger.info('Organization %s successfully disconnected' % org_id)
