@@ -6,12 +6,13 @@
 # the LICENSE file that was distributed with this source code.
 
 import json
-from os import environ
+import os
 from urllib.error import HTTPError
 from urllib.request import urlopen, Request
 
 from asdicts.dict import path
 
+from .client import create_client
 from .exceptions import ValidationError, BadRequest
 
 
@@ -20,7 +21,7 @@ def create_storage(settings, org_id):
         return JsonUrlStorage(settings['json_url'])
 
     if 'attachment' in settings:
-        return JsonFileStorage()
+        return JsonFileStorage(path(settings, 'attachment.file_id'), org_id)
 
     raise ValidationError('Invalid storage settings')
 
@@ -32,8 +33,8 @@ class JsonUrlStorage:
     @property
     def contents(self):
         try:
-            user_agent = environ.get('CRAWLER_USER_AGENT')
-            timeout = int(environ.get('CRAWLER_TIMEOUT', 5))
+            user_agent = os.environ.get('CRAWLER_USER_AGENT')
+            timeout = int(os.environ.get('CRAWLER_TIMEOUT', 5))
 
             if not user_agent:
                 headers = {}
@@ -56,9 +57,24 @@ class JsonUrlStorage:
 
 
 class JsonFileStorage:
+    def __init__(self, file_id, org_id):
+        self.file_id = file_id
+        self.org_id = org_id
+
     @property
     def contents(self):
-        return {}
+        client = create_client(self.org_id)
+        stream = client.slate_addon_files.download(self.file_id)
+
+        file_contents = ''
+
+        # With the following streaming code, the Python memory usage is
+        # restricted regardless of the size of the downloaded file:
+        with stream as r:
+            for chunk in r.iter_content(chunk_size=512, decode_unicode=True):
+                file_contents += chunk
+
+        return file_contents
 
 
 class JsonDecoder:

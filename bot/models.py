@@ -34,7 +34,7 @@ class Organization(db.Model):
     def token_expired(self) -> bool:
         """Check if token is expired."""
         sec = int((self.token_expires_at - datetime.utcnow()).total_seconds())
-        return sec <= 0
+        return sec <= 1
 
     def token_valid(self) -> bool:
         return self.token is not None and not self.token_expired()
