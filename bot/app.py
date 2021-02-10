@@ -1,6 +1,6 @@
 # This file is part of the Jsonify.
 #
-# Copyright (c) 2021 airSlate, Inc.
+# Copyright (C) 2021 Serghei Iakovlev <egrep@protonmail.ch>
 #
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
@@ -25,7 +25,7 @@ from flask import Flask
 
 
 def create_app(config=None) -> Flask:
-    """Creates the application."""
+    """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
 
     configure_app(app, config)

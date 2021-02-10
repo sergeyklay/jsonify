@@ -1,6 +1,6 @@
 # This file is part of the Jsonify.
 #
-# Copyright (c) 2021 airSlate, Inc.
+# Copyright (C) 2021 Serghei Iakovlev <egrep@protonmail.ch>
 #
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
@@ -11,11 +11,6 @@ This module tracks the version of the application as well as the
 base application info used by various functions within the
 package and provides a factory function to create application
 instance.
-
-Functions:
-
-    create_app(config: str) -> flask.Flask
-    load_env_vars(base_path: str) -> None
 
 Misc variables:
 
@@ -36,7 +31,7 @@ from werkzeug.local import LocalProxy
 # TODO: Move outside or use builtin logger
 logger = LocalProxy(lambda: current_app.logger)
 
-__copyright__ = 'Copyright (c) 2021 airSlate, Inc.'
+__copyright__ = 'Copyright (C) 2021 Serghei Iakovlev'
 __version__ = '1.0.0b1'
 __license__ = 'Apache 2.0'
 __author__ = 'Serghei Iakovlev'
