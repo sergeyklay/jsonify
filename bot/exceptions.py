@@ -57,7 +57,8 @@ class BadRequest(ApiError):
     def __init__(self, message, payload=None):
         super().__init__(
             message=message,
-            payload=payload
+            payload=payload,
+            status_code=400
         )
 
 

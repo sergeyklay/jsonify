@@ -24,7 +24,7 @@ def handle_connection():
     Gets notifications when the bot is added to a flow in an
     organization for the firs time.
     """
-    contents = request.get_json(silent=True)
+    contents = request.get_json()
 
     if not isinstance(contents, dict):
         raise BadRequest('No input data provided')
