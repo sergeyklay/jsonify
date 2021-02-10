@@ -1,28 +1,27 @@
 # This file is part of the Jsonify.
 #
-# Copyright (c) 2021 airSlate, Inc.
+# Copyright (C) 2021 Serghei Iakovlev <egrep@protonmail.ch>
 #
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
-import unittest
+def test_root_entrypoint(client):
+    """Go to the root an see welcome."""
+    rv = client.get('/')
+    assert b'JSON pre-fill add-on.' in rv.data
 
-from flask import current_app
 
-from bot.app import create_app
+def test_not_found(client):
+    """See error when page not found."""
+    rv = client.get('/foo/bar')
+    expected = {
+        'errors': [
+            {
+                'status': '404',
+                'title':  'Page Not Found',
+            }
+        ]
+    }
 
-
-class BaseTestCase(unittest.TestCase):
-    def setUp(self) -> None:
-        self.app = create_app('testing')
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-
-    def tearDown(self) -> None:
-        self.app_context.pop()
-
-    def test_app_exist(self) -> None:
-        self.assertFalse(current_app is None)
-
-    def test_app_is_testing(self):
-        self.assertTrue(current_app.config['TESTING'])
+    assert expected == rv.json
+    assert rv.status_code == 404
