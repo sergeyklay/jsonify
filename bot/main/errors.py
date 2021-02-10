@@ -15,13 +15,14 @@ Functions:
     page_not_found(e) -> Any
     internal_server_error(e) -> Any
     service_unavailable(e) -> Any
+    on_json_loading_failed(e: Request, error: json.decoder.JSONDecodeError)
 
 
 """
 
-from flask import jsonify
+from flask import jsonify, Request
 
-from bot.exceptions import ApiError
+from bot.exceptions import ApiError, BadRequest
 from bot.main import main
 
 
@@ -61,3 +62,14 @@ def internal_server_error(e):
 def service_unavailable(e):
     """Registers a function to handle 503 errors."""
     return handle_api_error(ApiError('Service Temporarily Unavailable', 503))
+
+
+def on_json_loading_failed(req, error):
+    """Abort with a custom JSON message."""
+    raise BadRequest(
+        "Failed to decode JSON object",
+        payload={'detail': '{0}'.format(error)}
+    )
+
+
+Request.on_json_loading_failed = on_json_loading_failed

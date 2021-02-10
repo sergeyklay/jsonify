@@ -20,7 +20,7 @@ from bot.resources.parser import (
 def resource_setup():
     """Handle resource fields setting."""
     contents = request.get_json()
-    logger.info('Received resource payload %s' % contents)
+    logger.info('Received resource payload: %s' % contents)
 
     fields = parse_request(create_request(contents))
     response = Response(fields)
