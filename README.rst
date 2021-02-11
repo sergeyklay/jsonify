@@ -4,7 +4,7 @@
 
 .. teaser-begin
 
-A simple bot for for `<https://developers.airslate.com>`_.
+A simple bot for `<https://developers.airslate.com>`_.
 
 Pre-fill a Slate with information from the uploaded JSON file or URL pointing
 to JSON file.
