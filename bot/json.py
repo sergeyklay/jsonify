@@ -7,6 +7,7 @@
 
 import json
 import os
+from functools import reduce
 from urllib.error import HTTPError
 from urllib.request import urlopen, Request
 
@@ -18,7 +19,11 @@ from .exceptions import ValidationError, BadRequest
 
 def create_storage(settings, org_id):
     if 'json_url' in settings:
-        return JsonUrlStorage(settings['json_url'])
+        return JsonUrlStorage(
+            url=settings['json_url'],
+            user_agent=os.environ.get('CRAWLER_USER_AGENT'),
+            timeout=int(os.environ.get('CRAWLER_TIMEOUT', 5)),
+        )
 
     if 'attachment' in settings:
         return JsonFileStorage(path(settings, 'attachment.file_id'), org_id)
@@ -27,22 +32,21 @@ def create_storage(settings, org_id):
 
 
 class JsonUrlStorage:
-    def __init__(self, url):
+    def __init__(self, url, user_agent=None, timeout=5):
         self.url = url
+        self.user_agent = user_agent
+        self.timeout = timeout
 
     @property
     def contents(self):
         try:
-            user_agent = os.environ.get('CRAWLER_USER_AGENT')
-            timeout = int(os.environ.get('CRAWLER_TIMEOUT', 5))
-
-            if not user_agent:
+            if not self.user_agent:
                 headers = {}
             else:
-                headers = {'User-Agent': user_agent}
+                headers = {'User-Agent': self.user_agent}
 
             request = Request(self.url, headers=headers)
-            with urlopen(request, timeout=timeout) as response:
+            with urlopen(request, timeout=self.timeout) as response:
                 contents = response.read().decode('utf-8')
 
             return contents
@@ -83,31 +87,14 @@ class JsonDecoder:
         self.contents = json.loads(contents)
 
     def list_paths(self):
-        """Create paths of all nested dictionary values.
-
-        >>> my_dict = {'a': [1, 2], 'b': 42, 'c': {'c1': 17, 'c2': [1, 2, 3]}}
-        >>> my_result = self.list_paths()
-        >>> print(my_result)
-        ['a', 'c.c2']
-        """
-        result = []
+        """Create paths of all nested dictionary values."""
         paths = self._find_list_fields(self.contents)
+        return reduce(lambda x, y: x + ['.'.join(y)], paths, [])
 
-        for p in map(lambda x: '.'.join(x), paths):
-            result.append(p)
-
-        return result
-
-    def fields(self, the_path):
-        """Get self.contents[the_path] dictionary keys as a list.
-
-        >>> my_dict = {'a': {'a1', 1, 'a2': 2}}
-        >>> my_result = self.fields('a')
-        >>> print(my_result)
-        ['a1', 'a2']
-        """
+    def fields(self, root):
+        """Get all keys pointing to lists using `the_path` as a start point."""
         result = []
-        first_object = path(self.contents, the_path)
+        first_object = path(self.contents, root)
         if isinstance(first_object, list) and len(first_object):
             first_object = first_object[0]
         if isinstance(first_object, dict):
@@ -115,13 +102,9 @@ class JsonDecoder:
         return result
 
     def _find_list_fields(self, obj, container=None):
-        """Create paths of all nested dictionary values.
-
-        >>> my_dict = {'a': [1, 2], 'b': 42, 'c': {'c1': 17, 'c2': [1, 2, 3]}}
-        >>> result = self._find_list_fields(my_dict)
-        >>> print(list(result))
-        [['a'], ['c', 'c2']]
-        """
+        """Create paths of all nested dictionary values."""
+        if not isinstance(obj, dict):
+            return []
         if container is None:
             container = []
 
