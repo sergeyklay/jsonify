@@ -1,73 +1,32 @@
-=======
-Jsonify
-=======
+.. raw:: html
 
-Example bot for `<https://developers.airslate.com>`_.
+    <h1 align="center">Jsonify</h1>
+
+.. teaser-begin
+
+A simple bot for for `<https://developers.airslate.com>`_.
 
 Pre-fill a Slate with information from the uploaded JSON file or URL pointing
 to JSON file.
 
-Usage
-=====
+.. teaser-end
 
-Local Development
-^^^^^^^^^^^^^^^^^^
+.. -project-information-
 
-First, you will need to install dependencies:
+Project Information
+===================
 
-.. code-block:: bash
+Jsonify is released under the `Apache 2.0 <https://choosealicense.com/licenses/apache-2.0/>`_,
+and the code lives on `GitHub <https://github.com/sergeyklay/jsonify>`_.
+It’s rigorously tested on Python 3.7+.
 
-   $ pip install -r requirements/requirements-dev.txt
+If you'd like to contribute to Jsonify you're most welcome!
 
-Then, export required variables:
+.. -support-
 
-.. code-block:: bash
+Support
+=======
 
-   $ export FLASK_DEBUG=1 FLASK_APP=runner.py BOT_ENVIRONMENT=development
-
-After that run migrations:
-
-.. code-block:: bash
-
-   $ flask db upgrade
-
-Finally run the server:
-
-.. code-block:: bash
-
-   $ flask run --port 5000
-
-Docker
-^^^^^^
-
-There is ``Makefile`` in the root of the project which is intended to make it
-easier to work with Docker as well as Docker Compose. For any other commands
-use ``flask <command>``.
-
-**Build images:**
-
-.. code-block:: bash
-
-   $ make build
-
-
-**Run application:**
-
-.. code-block:: bash
-
-   $ make up
-
-**List containers:**
-
-.. code-block:: bash
-
-   $ make ps
-
-**Uninstall:**
-
-.. code-block:: bash
-
-   $ make dist-clean
-   $ docker image prune -f # optional
-   $ docker rmi airslate/jsonify # optional
-
+Should you have any question, any remark, or if you find a bug, or if there is
+something you can't do with the Jsonify, please
+`open an issue <https://github.com/sergeyklay/jsonify/issues>`_.
