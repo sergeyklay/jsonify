@@ -1,0 +1,69 @@
+# This file is part of the Jsonify.
+#
+# Copyright (C) 2021 Serghei Iakovlev <egrep@protonmail.ch>
+#
+# For the full copyright and license information, please view
+# the LICENSE file that was distributed with this source code.
+
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - 'v[0-9]+.[0-9]+.x'
+      - 'feature/**'
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+  pull_request:
+    branches:
+      - master
+      - 'v[0-9]+.[0-9]+.x'
+env:
+  PYTHON: python
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    name: Python ${{ matrix.python }} on ${{ matrix.os }}
+
+    # The maximum number of minutes to let a workflow run
+    # before GitHub automatically cancels it. Default: 360
+    timeout-minutes: 30
+
+    strategy:
+      # When set to true, GitHub cancels
+      # all in-progress jobs if any matrix job fails.
+      fail-fast: false
+
+      matrix:
+        python: [ '3.7', '3.8', '3.9', '3.10.0-alpha.4' ]
+        os: [ ubuntu-20.04, macos-latest, windows-2019 ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 5
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip setuptools wheel
+          pip install -r requirements/requirements-dev.txt
+
+      - name: Run tests
+        run: pytest
+
+      - name: Success Reporting
+        if: success()
+        run: git log --format=fuller -5
