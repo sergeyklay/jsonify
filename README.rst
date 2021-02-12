@@ -1,6 +1,11 @@
 .. raw:: html
 
     <h1 align="center">Jsonify</h1>
+    <p align="center">
+        <a href="https://github.com/sergeyklay/jsonify/actions?workflow=CI">
+            <img src="https://github.com/sergeyklay/jsonify/workflows/CI/badge.svg?branch=master" alt="CI Status" />
+        </a>
+    </p>
 
 .. teaser-begin
 
