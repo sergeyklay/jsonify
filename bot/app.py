@@ -113,13 +113,3 @@ def configure_context_processors(app: Flask):
             app=app,
             db=models.db,
             **dict(inspect.getmembers(models, inspect.isclass)))
-
-
-def configure_tests(app: Flask):
-    """Configure test command."""
-    @app.cli.command()
-    def test():
-        """Run the unit test."""
-        import unittest
-        tests = unittest.TestLoader().discover('tests')
-        unittest.TextTestRunner(verbosity=2).run(tests)
