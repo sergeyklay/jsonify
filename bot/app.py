@@ -15,7 +15,6 @@ Functions:
     configure_blueprints(app: Flask) -> None
     configure_extensions(app: Flask) -> None
     configure_context_processors(app: Flask) -> None
-    configure_tests(app: Flask) -> None
 
 """
 
@@ -32,7 +31,6 @@ def create_app(config=None) -> Flask:
     configure_blueprints(app)
     configure_extensions(app)
     configure_context_processors(app)
-    configure_tests(app)
 
     return app
 
